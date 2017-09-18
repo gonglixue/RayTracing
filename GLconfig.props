@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>F:\library\gl\glfw\glfw-3.2.1\glfw-3.2.1\include;F:\library\gl\glew-2.0.0-win32\glew-2.0.0\include;F:\library\gl\glut-3.7.6-bin\glut-3.7.6-bin;F:\library\gl\soil\Simple OpenGL Image Library\src;F:\library\gl\glm-0.9.8.3\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\library\gl\glut-3.7.6-bin\glut-3.7.6-bin;F:\library\gl\glfw\self-build-glfw\src\Debug;F:\library\gl\soil\Simple OpenGL Image Library\projects\VC9\Debug;F:\library\gl\glew-2.0.0-win32\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;glut32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
