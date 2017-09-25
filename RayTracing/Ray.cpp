@@ -5,7 +5,7 @@ Ray::Ray(void) : o(0,0,0), d(0,0,1.0)
 {}
 
 // constructor
-Ray::Ray(const glm::vec3& origin, const glm::vec3& dir):
+Ray::Ray(const glm::dvec3& origin, const glm::dvec3& dir):
 	o(origin),
 	d(dir)
 {}
