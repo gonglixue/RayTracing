@@ -1,7 +1,14 @@
 #ifndef __GEOMETRIC_OBJECT_H__
 #define __GEOMETRIC_OBJECT_H__
+
+#include <math.h>
+
+#include "Constants.h"
+#include "BBox.h"
 #include "Ray.h"
 #include "ShadeRec.h"
+
+class Material;
 
 class GeometricObject
 {

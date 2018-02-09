@@ -12,6 +12,7 @@ public:
 	glm::vec3 color;
 	World& w;						// world reference for shading
 	
+	ShadeRec();
 	ShadeRec(World& w);
 	ShadeRec(const ShadeRec& sr);
 	

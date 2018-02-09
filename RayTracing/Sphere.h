@@ -4,11 +4,37 @@
 class Sphere:public GeometricObject
 {
 public:
+	Sphere();
+	Sphere(glm::dvec3 _center, double _r);
+	Sphere(const Sphere& sphere);
+	
+	Sphere& operator= (const Sphere& sphere);
+
+	void set_center(const glm::dvec3& _center);
+	void set_center(double x, double y, double z);
+	void set_radius(double _radius);
+
 	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr) const;
 private:
 	glm::dvec3 center;
 	float radius;
 	static double kEpsilon;
 };
+
+inline void Sphere::set_center(const glm::dvec3& _center)
+{
+	center = _center;
+}
+
+inline void Sphere::set_center(double x, double y, double z)
+{
+	center = glm::dvec3(x, y, z);
+}
+
+inline void Sphere::set_radius(double _radius)
+{
+	radius = _radius;
+}
+
 #endif
 

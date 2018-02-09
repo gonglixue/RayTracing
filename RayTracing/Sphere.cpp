@@ -1,5 +1,34 @@
 #include "Sphere.h"
 
+Sphere::Sphere() 
+	:GeometricObject(),
+	center(0,0,0),
+	radius(1.0)
+{}
+
+Sphere::Sphere(const glm::dvec3 _center, double _radius)
+	:GeometricObject(),
+	center(_center),
+	radius(_radius)
+{}
+
+Sphere::Sphere(const Sphere& sphere)
+	:GeometricObject(sphere),
+	center(sphere.center),
+	radius(sphere.radius)
+{}
+
+Sphere& Sphere::operator= (const Sphere& sphere)
+{
+	if (this == &sphere)
+		return (*this);
+	
+	center = sphere.center;	//?
+	radius = sphere.radius;
+
+	return (*this);
+}
+
 bool Sphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 {
 	double t;
@@ -7,9 +36,9 @@ bool Sphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 	double a = glm::dot(ray.d, ray.d);
 	double b = 2.0 * glm::dot(temp, ray.d);
 	double c = glm::dot(temp, temp) - radius * radius;
-	double disc = b*b - 4 * a*c;
+	double disc = b*b - 4 * a*c;	// delta
 
-	if (disc < 0.0)
+	if (disc < 0.0)	// 无解，不相交
 		return false;
 	else {
 		double e = sqrt(disc);

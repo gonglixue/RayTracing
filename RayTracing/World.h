@@ -2,7 +2,9 @@
 #define __WORLD_H__
 
 class World {
-
+public:
+	World();
+	~World();
 };
 
 #endif
