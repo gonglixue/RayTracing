@@ -7,6 +7,7 @@ public:
 	Sphere();
 	Sphere(glm::dvec3 _center, double _r);
 	Sphere(const Sphere& sphere);
+	~Sphere();
 	
 	Sphere& operator= (const Sphere& sphere);
 

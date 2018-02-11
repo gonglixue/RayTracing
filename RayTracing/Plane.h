@@ -7,7 +7,11 @@ public:
 	Plane(void);
 	Plane(const glm::dvec3 p, const glm::dvec3 n);
 	Plane(const Plane& plane);
+	virtual ~Plane();
 	
+	Plane& operator= (const Plane& rhs);
+	
+
 	virtual bool hit(const Ray& ray, double& t, ShadeRec& s) const;
 private:
 	glm::dvec3 point;	//平面上的一个已知点

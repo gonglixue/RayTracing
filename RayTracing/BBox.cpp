@@ -46,5 +46,69 @@ BBox::~BBox() {}
 
 bool BBox::hit(const Ray& ray) const
 {
+	double ox = ray.o.x;
+	double oy = ray.o.y;
+	double oz = ray.o.z;
+	double dx = ray.d.x;
+	double dy = ray.d.y;
+	double dz = ray.d.z;
 
+	double tx_min, ty_min, tz_min;
+	double tx_max, ty_max, tz_max;
+
+	double a = 1.0 / dx;
+	if (a >= 0) {
+		tx_min = (x0_ - ox) * a;
+		tx_max = (x1_ - ox) * a;
+	}
+	else {
+		tx_min = (x1_ - ox) * a;
+		tx_max = (x0_ - ox) * a;
+	}
+
+	double b = 1.0 / dy;
+	if (b >= 0) {
+		ty_min = (y0_ - oy) * b;
+		ty_max = (y1_ - oy) * b;
+	}
+	else {
+		ty_min = (y1_ - oy) * b;
+		ty_max = (y0_ - oy) * b;
+	}
+
+	double c = 1.0 / dz;
+	if (c >= 0) {
+		tz_min = (z0_ - oz) * c;
+		tz_max = (z1_ - oz) * c;
+	}
+	else {
+		tz_min = (z1_ - oz) * c;
+		tz_max = (z0_ - oz) * c;
+	}
+
+	double t0, t1;
+	if (tx_min > ty_min)
+		t0 = tx_min;
+	else
+		t0 = ty_min;
+
+	if (tx_max < ty_max)
+		t1 = tx_max;
+	else
+		t1 = ty_max;
+
+	if (tz_max < t1)
+		t1 = tz_max;
+
+	return (t0<t1 && t1>kEpsilon);
+
+}
+
+bool BBox::inside(const glm::dvec3& p) const
+{
+	return (
+		(p.x > x0_ && p.x < x1_) &&
+		(p.y > y0_ && p.y < y1_) &&
+		(p.z > z0_ && p.z < z1_)
+		);
 }

@@ -18,10 +18,15 @@ Sphere::Sphere(const Sphere& sphere)
 	radius(sphere.radius)
 {}
 
+Sphere::~Sphere()
+{}
+
 Sphere& Sphere::operator= (const Sphere& sphere)
 {
 	if (this == &sphere)
 		return (*this);
+
+	GeometricObject::operator= (sphere);
 	
 	center = sphere.center;	//?
 	radius = sphere.radius;

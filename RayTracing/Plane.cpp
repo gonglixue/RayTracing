@@ -25,6 +25,22 @@ Plane::Plane(const Plane& plane)
 
 }
 
+Plane::~Plane()
+{}
+
+Plane& Plane::operator= (const Plane& rhs)
+{
+	if (this == &rhs)
+		return (*this);
+
+	GeometricObject::operator=(rhs);
+
+	point = rhs.point;
+	normal = rhs.normal;
+
+	return (*this);
+}
+
 // tmin: 最近碰撞点的光线参数，其他需返回的参数由ShadeRec变量带回
 bool Plane::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 {

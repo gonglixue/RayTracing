@@ -21,9 +21,9 @@ const double 	invTWO_PI = 0.1591549430918953358;
 const double 	kEpsilon = 0.0001;
 const double	kHugeValue = 1.0E10;
 
-const glm::vec3	black(0.0);
-const glm::vec3 white(1.0);
-const glm::vec3	red(1.0, 0.0, 0.0);
+const glm::vec3	BLACK(0.0);
+const glm::vec3 WHITE(1.0);
+const glm::vec3	RED(1.0, 0.0, 0.0);
 
 const float 	invRAND_MAX = 1.0 / (float)RAND_MAX;
 

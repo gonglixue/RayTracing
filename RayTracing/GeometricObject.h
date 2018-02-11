@@ -13,10 +13,15 @@ class Material;
 class GeometricObject
 {
 public:
+	GeometricObject();
+	GeometricObject(const GeometricObject& object);
+
+	virtual ~GeometricObject();
 	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr);
 
 protected:
 	glm::vec3 color;
+	GeometricObject& operator= (const GeometricObject& rhs);
 };
 
 #endif
