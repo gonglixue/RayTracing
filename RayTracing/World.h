@@ -21,6 +21,8 @@ public:
 	void display_pixel(const int row,
 		const int column,
 		const glm::dvec3& pixel_color) const;
+private:
+	glm::vec3 background_color;
 };
 
 #endif
