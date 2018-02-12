@@ -1,4 +1,5 @@
 #include "GeometricObject.h"
+#include "ShadeRec.h"
 
 GeometricObject::GeometricObject():color(BLACK)
 {}
@@ -23,4 +24,9 @@ GeometricObject& GeometricObject::operator= (const GeometricObject& rhs)
 
 GeometricObject::~GeometricObject()
 {}
+
+bool GeometricObject::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
+{
+	return false;
+}
 

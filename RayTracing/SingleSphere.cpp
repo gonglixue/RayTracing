@@ -19,7 +19,7 @@ glm::vec3 SingleSphere::trace_ray(const Ray& ray) const
 	ShadeRec sr(*world_ptr);
 	double t;
 
-	if (world_ptr->sphere.hit(ray, t, sr))
+	if (world_ptr->sphere_.hit(ray, t, sr))
 		return RED;
 	else
 		return BLACK;

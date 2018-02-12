@@ -11,6 +11,10 @@ ShadeRec::ShadeRec(World& wr)
 
 }
 
+ShadeRec::ShadeRec()
+	:w(World())
+{}
+
 ShadeRec::ShadeRec(const ShadeRec& sr)
 	:w(sr.w)	// 应用类型的初始化一定要放在初始化列表里，不能放在构造函数体里，这是为什么？
 {

@@ -1,4 +1,5 @@
 #include "Sphere.h"
+#include "ShadeRec.h"
 
 Sphere::Sphere() 
 	:GeometricObject(),

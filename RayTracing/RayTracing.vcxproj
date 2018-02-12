@@ -153,6 +153,7 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="ShadeRec.h" />
+    <ClInclude Include="SingleSphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Tracer.h" />
     <ClInclude Include="ViewPlane.h" />
@@ -161,10 +162,13 @@
   <ItemGroup>
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
+    <ClCompile Include="SingleSphere.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Tracer.cpp" />
     <ClCompile Include="ViewPlane.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

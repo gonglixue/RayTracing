@@ -1,5 +1,5 @@
 #include "Plane.h"
-
+#include "ShadeRec.h"
 const double Plane::kEpsilon = 0.001;	// static const类型的初始化
 
 Plane::Plane()

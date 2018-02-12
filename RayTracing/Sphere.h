@@ -1,7 +1,9 @@
 #ifndef __SPHERE_H__
 #define __SPHERE_H__
 #include "GeometricObject.h"
-class Sphere:public GeometricObject
+
+
+class Sphere :public GeometricObject
 {
 public:
 	Sphere();
@@ -19,7 +21,7 @@ public:
 private:
 	glm::dvec3 center;
 	float radius;
-	static double kEpsilon;
+	//static double kEpsilon;
 };
 
 inline void Sphere::set_center(const glm::dvec3& _center)

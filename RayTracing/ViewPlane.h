@@ -6,7 +6,6 @@ class ViewPlane
 public:
 	int hres;
 	int vres;
-	float s;	// pixel size
 	float gamma; // monitor gamma factor
 	float inv_gamma;	// one over gamma
 
