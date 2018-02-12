@@ -4,6 +4,7 @@
 #include "ViewPlane.h"
 #include "Sphere.h"
 #include "Tracer.h"
+#include <glut.h>
 
 class World {
 public:
@@ -15,14 +16,15 @@ public:
 	Tracer* tracer_ptr;
 
 	void build();
-	void render_scene() const;
+	void render_scene();
 	void open_window(const int hres, const int vres) const;
 
-	void display_pixel(const int row,
-		const int column,
-		const glm::dvec3& pixel_color) const;
+	void display_pixel(int row,
+		int column,
+		const glm::vec3& pixel_color);
 private:
 	glm::vec3 background_color;
+	GLubyte* frame_buffer;
 };
 
 #endif
