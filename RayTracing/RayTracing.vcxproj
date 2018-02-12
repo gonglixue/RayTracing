@@ -154,6 +154,8 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="ShadeRec.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Tracer.h" />
+    <ClInclude Include="ViewPlane.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,8 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="ViewPlane.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
