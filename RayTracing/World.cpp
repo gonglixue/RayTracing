@@ -1,5 +1,8 @@
 #include "World.h"
 #include "SingleSphere.h"
+#include "MultipleObjects.h"
+#include "ShadeRec.h"
+#include "Plane.h"
 
 World::World()
 	:background_color(BLACK),
@@ -19,10 +22,26 @@ void World::build(const int width, const int height)
 
 	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
 	background_color = BLACK;
-	tracer_ptr = new SingleSphere(this);
+	//tracer_ptr = new SingleSphere(this);
+	tracer_ptr = new MultipleObjects(this);
 
-	sphere_.set_center(0.0, 0.0, 0.0);
-	sphere_.set_radius(85.0);
+	/*sphere_.set_center(0.0, 0.0, 0.0);
+	sphere_.set_radius(85.0);*/
+	// world objects
+	Sphere* sphere_ptr = new Sphere;
+	sphere_ptr->set_center(0, -25, 0);
+	sphere_ptr->set_radius(80.0);
+	sphere_ptr->set_color(1, 0, 0);
+	add_object(sphere_ptr);
+
+	//delete sphere_ptr;
+	sphere_ptr = new Sphere(glm::dvec3(0, 20, 0), 60);
+	sphere_ptr->set_color(1, 1, 0); //yellow
+	add_object(sphere_ptr);
+
+	Plane* plane_ptr = new Plane(glm::dvec3(0), glm::dvec3(0, 1, 1));
+	plane_ptr->set_color(0, 0.35, 0);//dark green
+	add_object(plane_ptr);
 
 	open_window(width, height);
 }
@@ -74,4 +93,21 @@ void World::display_pixel(int row, int col, const glm::vec3& color)
 	frame_buffer[row * vp.hres * 3 + col * 3 + 2] = (GLubyte)(color.z * 255);
 }
 
+ShadeRec World::hit_bare_bones_objects(const Ray& ray)
+{
+	ShadeRec sr(*this);
+	double t;
+	double tmin = kHugeValue;
+	int num_objects = objects.size();
+
+	for (int j = 0; j < num_objects; j++) {
+		if (objects[j]->hit(ray, t, sr) && (t < tmin)) {
+			sr.hit_an_object = true;
+			tmin = t;
+			sr.color = objects[j]->get_color();
+		}
+	}
+
+	return sr;
+}
 

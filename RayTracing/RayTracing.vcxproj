@@ -150,6 +150,7 @@
     <ClInclude Include="BBox.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GeometricObject.h" />
+    <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="ShadeRec.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="ShadeRec.cpp" />

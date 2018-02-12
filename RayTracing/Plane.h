@@ -18,7 +18,7 @@ private:
 	glm::dvec3 normal;	//平面法线
 
 	// for shadows and secondary rays
-	static const double kEpsilon;
+	// static const double kEpsilon;
 };
 
 #endif
