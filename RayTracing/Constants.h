@@ -27,6 +27,6 @@ const glm::vec3	RED(1.0, 0.0, 0.0);
 
 const float 	invRAND_MAX = (1.0 / (float)RAND_MAX);
 
-#define rand_float() (rand() * invRAND_MAX)
+//#define rand_float() (rand() * invRAND_MAX)
 
 #endif

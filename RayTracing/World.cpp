@@ -3,6 +3,7 @@
 #include "MultipleObjects.h"
 #include "ShadeRec.h"
 #include "Plane.h"
+#include "Maths.h"
 
 World::World()
 	:background_color(BLACK),
