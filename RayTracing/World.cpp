@@ -4,6 +4,7 @@
 #include "ShadeRec.h"
 #include "Plane.h"
 #include "Maths.h"
+#include "Jittered.h"
 
 World::World()
 	:background_color(BLACK),
@@ -16,11 +17,13 @@ World::~World()
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
+	int num_samples = 25;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
 	vp.set_gamma(1.0);
-	vp.set_num_samples(16);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
 
 	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
 	background_color = BLACK;

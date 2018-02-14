@@ -5,3 +5,19 @@ ViewPlane::ViewPlane()
 	gamma(1.0), inv_gamma(1.0),
 	num_samples(4)
 {}
+
+void ViewPlane::set_sampler(Sampler* _sampler)
+{
+	if (sampler_ptr_) {
+		delete sampler_ptr_;
+		sampler_ptr_ = NULL;
+	}
+
+	num_samples = _sampler->get_num_samples();
+	sampler_ptr_ = _sampler;
+}
+
+Sampler* ViewPlane::get_sampler()
+{
+	return sampler_ptr_;
+}

@@ -55,6 +55,9 @@ Sampler& Sampler::operator= (const Sampler& rhs)
 	return (*this);
 }
 
+Sampler::~Sampler()
+{}
+
 void Sampler::set_num_sets(const int ns)
 {
 	num_sets = ns;

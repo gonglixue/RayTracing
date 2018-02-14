@@ -5,6 +5,15 @@
 
 class Jittered :public Sampler
 {
+public:
+	Jittered();
+	Jittered(const int _num_samples);
+	Jittered(const int _num_samples, const int _num_sets);
+	Jittered(const Jittered& jitter);
+
+	Jittered& operator= (const Jittered& rhs);
+	virtual ~Jittered();
+
 private:
 	virtual void generate_samples();
 };

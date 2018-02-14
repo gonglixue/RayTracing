@@ -1,5 +1,40 @@
 #include "Jittered.h"
 
+Jittered::Jittered()
+	:Sampler()
+{}
+
+Jittered::Jittered(const int _num_samples)
+	: Sampler(_num_samples)
+{
+	generate_samples();
+}
+
+Jittered::Jittered(const int _num_samples, const int _num_sets)
+	: Sampler(_num_samples, _num_samples)
+{
+	generate_samples();
+}
+
+Jittered::Jittered(const Jittered& jitterd)
+	: Sampler(jitterd)
+{
+	generate_samples();
+}
+
+Jittered& Jittered::operator= (const Jittered& rhs)
+{
+	if (this == &rhs)
+		return (*this);
+
+	Sampler::operator= (rhs);
+
+	return (*this);
+}
+
+Jittered::~Jittered()
+{}
+
 // 在单位正方形内生成num_samples * num_sets个采样点
 void Jittered::generate_samples()
 {
