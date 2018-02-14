@@ -39,7 +39,6 @@ void World::build(const int width, const int height)
 	sphere_ptr->set_color(1, 0, 0);
 	add_object(sphere_ptr);
 
-	//delete sphere_ptr;
 	sphere_ptr = new Sphere(glm::dvec3(0, 20, 0), 60);
 	sphere_ptr->set_color(1, 1, 0); //yellow
 	add_object(sphere_ptr);
@@ -60,6 +59,7 @@ void World::render_scene()
 	double zw = 100.0;
 	double x, y;
 	float s = vp.get_pixel_size();
+	glm::dvec2 sp;	// sample point in a unit square
 
 	ray.d = glm::dvec3(0, 0, -1);	//光线垂直向屏幕内部
 
@@ -68,11 +68,12 @@ void World::render_scene()
 		for (int c = 0; c < vp.hres; c++) {
 			// 像素坐标(c, r)转世界坐标(x, y); 其中像素坐标以左下角为原点
 			// 抖动随机采样
-			glm::vec3 pixel_color;
+			glm::vec3 pixel_color = BLACK;
 
 			for (int p = 0; p < vp.get_num_samples(); p++) {
-				x = s * (c - 0.5*vp.hres + rand_float());
-				y = s * (r - 0.5*vp.vres + rand_float());
+				sp = vp.sampler_ptr->sample_unit_square();
+				x = s * (c - 0.5*vp.hres + sp.x);
+				y = s * (r - 0.5*vp.vres + sp.y);
 
 				ray.o = glm::dvec3(x, y, zw);
 				pixel_color = (pixel_color + tracer_ptr->trace_ray(ray));

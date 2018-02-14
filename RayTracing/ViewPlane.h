@@ -19,15 +19,16 @@ public:
 	// void set_num_samples(const int _samples);
 
 	void set_sampler(Sampler* _sampler);
-	Sampler* get_sampler();
 	
-	// int get_num_samples() const { return num_samples; }
+	int get_num_samples() const { return num_samples; }
 	float get_pixel_size() const { return pixel_size_; }
+
+	Sampler* sampler_ptr;
 
 private:
 	float pixel_size_;
-	// int num_samples;
-	Sampler* sampler_ptr_;
+	int num_samples;
+
 };
 
 inline void ViewPlane::set_hres(const int h_res) {

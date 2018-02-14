@@ -8,16 +8,16 @@ ViewPlane::ViewPlane()
 
 void ViewPlane::set_sampler(Sampler* _sampler)
 {
-	if (sampler_ptr_) {
-		delete sampler_ptr_;
-		sampler_ptr_ = NULL;
+	if (sampler_ptr) {
+		delete sampler_ptr;
+		sampler_ptr = NULL;
 	}
 
 	num_samples = _sampler->get_num_samples();
-	sampler_ptr_ = _sampler;
+	sampler_ptr = _sampler;
 }
 
-Sampler* ViewPlane::get_sampler()
-{
-	return sampler_ptr_;
-}
+//Sampler* ViewPlane::get_sampler()
+//{
+//	return sampler_ptr_;
+//}

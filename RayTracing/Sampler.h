@@ -23,12 +23,15 @@ public:
 	virtual void generate_samples() = 0;
 	void shuffle_x_coordinates();
 	void shuffle_y_coordinates();
-	void shuffle_samples();
+	// void shuffle_samples();
 	void setup_shuffled_indices();
 
+	/* advanced sampler */
+	/*
 	void map_samples_to_unit_disk(); //?
 	void map_samples_to_hemisphere(const float p);
 	void map_sampels_to_sphere();
+	*/
 	
 	glm::dvec2 sample_unit_square();
 

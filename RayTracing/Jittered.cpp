@@ -2,7 +2,9 @@
 
 Jittered::Jittered()
 	:Sampler()
-{}
+{
+	generate_samples();
+}
 
 Jittered::Jittered(const int _num_samples)
 	: Sampler(_num_samples)

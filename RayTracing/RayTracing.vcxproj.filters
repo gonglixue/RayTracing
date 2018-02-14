@@ -51,6 +51,18 @@
     <ClInclude Include="MultipleObjects.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Maths.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Jittered.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NRooks.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -87,6 +99,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MultipleObjects.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Maths.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Jittered.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NRooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

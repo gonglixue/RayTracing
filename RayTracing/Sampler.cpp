@@ -111,3 +111,14 @@ void Sampler::setup_shuffled_indices()
 
 	}
 }
+
+/*	每个像素均采用同一采样点集的话，仍会产生失真
+	因此引入jump，采样完num_samples个点后，从其他的set里采样
+*/
+glm::dvec2 Sampler::sample_unit_square()
+{
+	if (count % num_samples == 0)
+		jump = (rand_int() % num_sets) * num_samples;
+
+	return (samples[jump + (count++ % num_samples)]);
+}
