@@ -15,6 +15,7 @@ public:
 	void set_pixel_size(const float size);
 	void set_gamma(const float g);
 	void set_num_samples(const int _samples);
+
 	
 	int get_num_samples() const { return num_samples; }
 	float get_pixel_size() const { return pixel_size_; }
