@@ -38,6 +38,7 @@ Jittered::~Jittered()
 {}
 
 // 在单位正方形内生成num_samples * num_sets个采样点
+// vector<> samples中存储的采样点是有序的，Sampler::sample_unit_square()访问采样点时是随机访问
 void Jittered::generate_samples()
 {
 	int n = (int)sqrt(num_samples);

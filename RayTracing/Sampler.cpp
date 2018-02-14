@@ -112,6 +112,73 @@ void Sampler::setup_shuffled_indices()
 	}
 }
 
+void Sampler::map_samples_to_unit_disk()
+{
+	int size = samples.size();
+	float r, phi;		// polar coordinates
+	glm::dvec2 sp;		// sample point on unit disk
+
+	disk_samples.reserve(size);
+
+	for (int j = 0; j < size; j++) {
+		// map from [0,1] to [-1,1]
+		sp.x = 2.0 * samples[j].x - 1.0f;
+		sp.y = 2.0 * samples[j].y - 1.0f;
+
+		if (sp.x > -sp.y) {
+			if (sp.x > sp.y) {
+				r = sp.x;
+				phi = sp.y / sp.x;
+			}
+			else {
+				r = sp.y;
+				phi = 2 - sp.x / sp.y;
+			}
+		}
+		else {
+			if (sp.x < sp.y) {
+				r = -sp.x;
+				phi = 4 + sp.y / sp.x;
+			}
+			else {
+				r = -sp.y;
+				if (sp.y != 0.0)
+					phi = 6 - sp.x / sp.y;
+				else
+					phi = 0.0;
+			}
+		}
+
+		phi = phi * PI / 4.0;
+
+		disk_samples[j].x = r * cos(phi);
+		disk_samples[j].y = r * sin(phi);
+	}
+
+	samples.erase(samples.begin(), samples.end());
+}
+
+void Sampler::map_samples_to_hemisphere(const float e)
+{
+	int size = samples.size();
+	hemisphere_samples.reserve(size);
+
+	for (int j = 0; j < size; j++)
+	{
+		float cos_phi = cos(2 * PI*samples[j].x);
+		float sin_phi = sin(2 * PI*samples[j].x);
+		float cos_theta = pow(1 - samples[j].y, 1.0 / (e + 1.0));
+		float sin_theta = sqrt(1.0 - cos_theta*cos_theta);
+
+		float pu = sin_theta * cos_phi;
+		float pv = sin_theta * sin_phi;
+		float pw = cos_theta;
+
+		hemisphere_samples.push_back(glm::dvec3(pu, pv, pw));
+	}
+	
+}
+
 /*	每个像素均采用同一采样点集的话，仍会产生失真
 	因此引入jump，采样完num_samples个点后，从其他的set里采样
 */
@@ -120,5 +187,24 @@ glm::dvec2 Sampler::sample_unit_square()
 	if (count % num_samples == 0)
 		jump = (rand_int() % num_sets) * num_samples;
 
-	return (samples[jump + (count++ % num_samples)]);
+	// return (samples[jump + (count++ % num_samples)]);
+	return samples[jump + shuffled_indices[jump + (count++ % num_samples)]];
 }
+
+glm::dvec2 Sampler::sample_unit_disk()
+{
+	if (count % num_samples == 0)
+		jump = (rand_int() % num_sets) * num_samples;
+
+	return disk_samples[jump + shuffled_indices[jump + (count++%num_samples)]];
+}
+
+glm::dvec3 Sampler::sample_hemisphere()
+{
+	if (count % num_samples == 0)  									// start of a new pixel
+		jump = (rand_int() % num_sets) * num_samples;
+
+	return (hemisphere_samples[jump + shuffled_indices[jump + count++ % num_samples]]);
+	
+}
+
