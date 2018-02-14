@@ -19,6 +19,7 @@ void World::build(const int width, const int height)
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
 	vp.set_gamma(1.0);
+	vp.set_num_samples(16);
 
 	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
 	background_color = BLACK;
@@ -50,7 +51,7 @@ void World::render_scene()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glm::vec3 pixel_color;
+	
 	Ray ray;
 	double zw = 100.0;
 	double x, y;
@@ -62,11 +63,22 @@ void World::render_scene()
 	{
 		for (int c = 0; c < vp.hres; c++) {
 			// 像素坐标(c, r)转世界坐标(x, y); 其中像素坐标以左下角为原点
-			x = s * (c - vp.hres / 2.0 + 0.5);	
-			y = s * (r - vp.vres / 2.0 + 0.5);
+			// 抖动随机采样
+			glm::vec3 pixel_color;
 
-			ray.o = glm::dvec3(x, y, zw);
-			pixel_color = tracer_ptr->trace_ray(ray);
+			for (int p = 0; p < vp.get_num_samples(); p++) {
+				x = s * (c - 0.5*vp.hres + rand_float());
+				y = s * (r - 0.5*vp.vres + rand_float());
+
+				ray.o = glm::dvec3(x, y, zw);
+				pixel_color = (pixel_color + tracer_ptr->trace_ray(ray));
+				// pixel_color = tracer_ptr->trace_ray(ray);
+				// display_pixel(r, c, pixel_color);
+
+			}
+			//x = s * (c - vp.hres / 2.0 + 0.5);	
+			//y = s * (r - vp.vres / 2.0 + 0.5);
+			pixel_color = ((1.0f / vp.get_num_samples()) * pixel_color);
 			display_pixel(r, c, pixel_color);
 		}
 	}
