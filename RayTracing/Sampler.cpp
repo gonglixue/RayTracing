@@ -94,6 +94,8 @@ void Sampler::shuffle_y_coordinates()
 	}
 }
 
+
+// shuffled_indices在某个set里是乱序的，但是总体的set是有序的
 void Sampler::setup_shuffled_indices()
 {
 	shuffled_indices.reserve(num_samples * num_sets); // ?

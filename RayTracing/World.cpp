@@ -53,7 +53,7 @@ void World::build(const int width, const int height)
 void World::render_scene()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	glm::vec3 pixel_color = BLACK;
 	
 	Ray ray;
 	double zw = 100.0;
@@ -68,7 +68,7 @@ void World::render_scene()
 		for (int c = 0; c < vp.hres; c++) {
 			// 像素坐标(c, r)转世界坐标(x, y); 其中像素坐标以左下角为原点
 			// 抖动随机采样
-			glm::vec3 pixel_color = BLACK;
+			
 
 			for (int p = 0; p < vp.get_num_samples(); p++) {
 				sp = vp.sampler_ptr->sample_unit_square();
@@ -84,6 +84,36 @@ void World::render_scene()
 			//x = s * (c - vp.hres / 2.0 + 0.5);	
 			//y = s * (r - vp.vres / 2.0 + 0.5);
 			pixel_color = ((1.0f / vp.get_num_samples()) * pixel_color);
+			display_pixel(r, c, pixel_color);
+		}
+	}
+
+	glDrawPixels(vp.hres, vp.vres, GL_RGB, GL_UNSIGNED_BYTE, frame_buffer);
+	glutSwapBuffers();
+}
+
+void World::render_perspective()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glm::vec3 pixel_color = BLACK;
+
+	float s = vp.get_pixel_size();
+
+	float eye = 200;
+	float d = 200;
+
+	Ray ray;
+	ray.o = glm::dvec3(0.0, 0.0, eye);
+
+	for (int r = 0; r < vp.vres; r++)
+	{
+		for (int c = 0; c < vp.hres; c++)
+		{
+			ray.d = glm::dvec3(s*(c - 0.5*(vp.hres - 1.0)),
+				s*(r - 0.5*(vp.vres - 1.0)),
+				-d);
+			ray.d = glm::normalize(ray.d);
+			pixel_color = tracer_ptr->trace_ray(ray);
 			display_pixel(r, c, pixel_color);
 		}
 	}

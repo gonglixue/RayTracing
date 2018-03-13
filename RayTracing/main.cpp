@@ -6,7 +6,8 @@ int width = 200;
 
 void draw()
 {
-	world.render_scene();
+	//world.render_scene();
+	world.render_perspective();
 }
 
 int main(int argc, char* argv[])
