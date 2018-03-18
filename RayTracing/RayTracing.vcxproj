@@ -148,12 +148,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BBox.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="Jittered.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
+    <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sampler.h" />
@@ -166,12 +168,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BBox.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="Jittered.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
+    <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Sampler.cpp" />

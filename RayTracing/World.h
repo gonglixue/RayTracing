@@ -4,10 +4,13 @@
 #include "ViewPlane.h"
 #include "Sphere.h"
 #include "Tracer.h"
+#include "Pinhole.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <glut.h>
+
+class Camera;
 
 class World {
 public:
@@ -26,17 +29,33 @@ public:
 	void render_scene();
 	void render_perspective();
 
-private:
-	
-	GLubyte* frame_buffer;
+	const ViewPlane& get_viewplane() const { return vp; }
+	const Tracer* get_tracer() const { return tracer_ptr; }
 	void display_pixel(int row,
 		int column,
 		const glm::vec3& pixel_color);
+	void draw_framebuffer()
+	{
+		glDrawPixels(vp.hres, vp.vres, GL_RGB, GL_UNSIGNED_BYTE, frame_buffer);
+		glutSwapBuffers();
+	}
+
+	void set_camera(Camera* c_ptr);
+
+private:
+	
+	GLubyte* frame_buffer;
+	Camera* camera_ptr;
 	void open_window(const int hres, const int vres) const;
 };
 
 inline void World::add_object(GeometricObject* object_ptr) {
 	objects.push_back(object_ptr);
+}
+
+inline void World::set_camera(Camera* c_ptr)
+{
+	camera_ptr = c_ptr;
 }
 
 #endif

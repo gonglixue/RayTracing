@@ -30,6 +30,11 @@ void World::build(const int width, const int height)
 	//tracer_ptr = new SingleSphere(this);
 	tracer_ptr = new MultipleObjects(this);
 
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
 	/*sphere_.set_center(0.0, 0.0, 0.0);
 	sphere_.set_radius(85.0);*/
 	// world objects
@@ -94,6 +99,12 @@ void World::render_scene()
 
 void World::render_perspective()
 {
+	if (camera_ptr)
+	{
+		camera_ptr->render_scene(*this);
+		return;
+	}
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	glm::vec3 pixel_color = BLACK;
 
