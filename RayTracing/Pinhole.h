@@ -14,8 +14,10 @@ public:
 
 	virtual ~Pinhole();
 
-	void set_view_distance(float vpd);
-	void set_zoom(float zoom_factor);
+	void set_view_distance(float vpd) {
+		d = vpd;
+	}
+	void set_zoom(float zoom_factor) { zoom = zoom_factor; }
 
 	glm::dvec3 get_direction(const glm::vec2 p) const;
 	virtual void render_scene(World& w);
