@@ -69,6 +69,21 @@
     <ClInclude Include="Pinhole.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BRDF.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Lambertian.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Ambient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -123,6 +138,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Pinhole.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BRDF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Lambertian.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Ambient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

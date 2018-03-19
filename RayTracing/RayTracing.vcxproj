@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ambient.h" />
     <ClInclude Include="BBox.h" />
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
@@ -154,11 +155,13 @@
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="Jittered.h" />
     <ClInclude Include="Lambertian.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
     <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShadeRec.h" />
@@ -169,18 +172,21 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ambient.cpp" />
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="Jittered.cpp" />
     <ClCompile Include="Lambertian.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
     <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
