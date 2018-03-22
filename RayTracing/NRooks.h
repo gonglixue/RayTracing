@@ -17,4 +17,6 @@ public:
 private:
 	virtual void generate_samples();
 };
+
+
 #endif // !__NROOKS_H__

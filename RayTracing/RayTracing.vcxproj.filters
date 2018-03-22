@@ -84,6 +84,15 @@
     <ClInclude Include="PointLight.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RayCast.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Matte.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -153,6 +162,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RayCast.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Matte.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

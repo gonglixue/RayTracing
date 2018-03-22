@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "Tracer.h"
 #include "Pinhole.h"
+#include "Light.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
@@ -22,10 +23,16 @@ public:
 	Sphere sphere_;
 	Tracer* tracer_ptr;
 	std::vector<GeometricObject*> objects;
+	Light* ambient_ptr;
+	std::vector<Light*> lights;
 
 	void build(const int width=200, const int height=200);
 	void add_object(GeometricObject* object_ptr);
+	void add_light(Light* light_ptr);
+
+	ShadeRec hit_objects(const Ray& ray);
 	ShadeRec hit_bare_bones_objects(const Ray& ray);
+
 	void render_scene();
 	void render_perspective();
 
@@ -56,6 +63,11 @@ inline void World::add_object(GeometricObject* object_ptr) {
 inline void World::set_camera(Camera* c_ptr)
 {
 	camera_ptr = c_ptr;
+}
+
+inline void World::add_light(Light* light_ptr)
+{
+	lights.push_back(light_ptr);
 }
 
 #endif
