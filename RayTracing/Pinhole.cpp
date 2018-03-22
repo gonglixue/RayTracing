@@ -19,6 +19,12 @@ Pinhole::Pinhole(const Pinhole& c)
 
 }
 
+Camera*
+Pinhole::clone(void) const {
+	return (new Pinhole(*this));
+}
+
+
 Pinhole& Pinhole::operator= (const Pinhole& rhs)
 {
 	if (this == &rhs)
@@ -72,7 +78,7 @@ void Pinhole::render_scene(World& w)
 					pp.x = pix_size * (c - 0.5 * vp.hres + (q + 0.5) / n);
 					pp.y = pix_size * (r - 0.5 * vp.vres + (p + 0.5) / n);
 					ray.d = get_direction(pp);
-					pixel_color = pixel_color + w.get_tracer()->trace_ray(ray);
+					pixel_color = pixel_color + w.get_tracer()->trace_ray(ray, 0);
 				}
 			}
 

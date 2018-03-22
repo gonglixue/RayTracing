@@ -47,6 +47,11 @@ inline void PointLight::set_location(glm::vec3& light_pos)
 	location = light_pos;
 }
 
+inline void PointLight::set_location(float x, float y, float z)
+{
+	location = glm::vec3(x, y, z);
+}
+
 inline glm::vec3 PointLight::get_location() {
 	return location;
 }

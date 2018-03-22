@@ -6,6 +6,9 @@
 #include "Maths.h"
 #include "Jittered.h"
 #include "Ambient.h"
+#include "RayCast.h"
+#include "PointLight.h"
+#include "Matte.h"
 
 World::World()
 	:background_color(BLACK),
@@ -32,6 +35,70 @@ void World::build(const int width, const int height)
 	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
 	background_color = BLACK;
 	//tracer_ptr = new SingleSphere(this);
+	//tracer_ptr = new MultipleObjects(this);
+	tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(1.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 0, 850);
+	pinhole->set_lookat(-5, 0, 0);
+	pinhole->set_view_distance(850.0);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	// 光源
+	PointLight* light_ptr2 = new PointLight;
+	light_ptr2->set_location(100, 50, 150);
+	light_ptr2->scale_radiance(3.0);		//?
+	this->add_light(light_ptr2);
+
+	// objects
+	Matte* matte_ptr1 = new Matte;
+	matte_ptr1->set_ka(0.25);		// 环境光反射系数
+	matte_ptr1->set_kd(0.65);		// 漫反射系数
+	matte_ptr1->set_cd(1, 1, 0);	// 颜色 黄
+	Sphere* sphere_ptr1 = new Sphere(glm::vec3(10, -5, 0), 27);
+	sphere_ptr1->set_material(matte_ptr1);
+	this->add_object(sphere_ptr1);
+
+	Matte* matte_ptr2 = new Matte;
+	matte_ptr2->set_ka(0.15);
+	matte_ptr2->set_kd(0.85);
+	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
+	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 27);
+	sphere_ptr2->set_material(matte_ptr2);
+	this->add_object(sphere_ptr2);
+
+	Matte* matte_ptr3 = new Matte;
+	matte_ptr3->set_ka(0.15);
+	matte_ptr3->set_kd(0.5);
+	matte_ptr3->set_cd(0, 0.4, 0.2);				// dark green
+	Plane* plane_ptr = new Plane(glm::vec3(0, 0, -50), glm::vec3(0, 0, 1));
+	plane_ptr->set_material(matte_ptr3);
+	// this->add_object(plane_ptr);
+
+	open_window(width, height);
+}
+/* without material
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 25;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	//tracer_ptr = new SingleSphere(this);
 	tracer_ptr = new MultipleObjects(this);
 
 	// camera
@@ -39,8 +106,8 @@ void World::build(const int width, const int height)
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
 
-	/*sphere_.set_center(0.0, 0.0, 0.0);
-	sphere_.set_radius(85.0);*/
+	//sphere_.set_center(0.0, 0.0, 0.0);
+	//sphere_.set_radius(85.0);
 	// world objects
 	Sphere* sphere_ptr = new Sphere;
 	sphere_ptr->set_center(0, -25, 0);
@@ -58,6 +125,7 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
+*/
 
 void World::render_scene()
 {
@@ -114,8 +182,8 @@ void World::render_perspective()
 
 	float s = vp.get_pixel_size();
 
-	float eye = 200;
-	float d = 200;
+	float eye = 500;
+	float d = 850;
 
 	Ray ray;
 	ray.o = glm::dvec3(0.0, 0.0, eye);
@@ -188,6 +256,7 @@ ShadeRec World::hit_objects(const Ray& ray)
 			tmin = t;
 			sr.material_ptr = objects[j]->get_material();
 			sr.hit_point = ray.o + t * ray.d;
+			sr.color = glm::vec3(1, 0, 0);
 			normal = sr.normal;
 			local_hit_points = sr.local_hit_point;
 		}

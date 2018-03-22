@@ -9,7 +9,8 @@ class Pinhole:public Camera {
 public:
 	Pinhole();
 	Pinhole(const Pinhole& ph);
-
+	virtual Camera*
+		clone(void) const;
 	Pinhole& operator= (const Pinhole& rhs);
 
 	virtual ~Pinhole();

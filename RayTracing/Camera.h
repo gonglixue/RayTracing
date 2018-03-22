@@ -8,6 +8,8 @@ class Camera {
 public:
 	Camera();
 	Camera(const Camera& camera);
+	virtual Camera*							// virtual copy constructor
+		clone(void) const = 0;
 
 	virtual
 		~Camera();
