@@ -37,6 +37,7 @@ public:
 	virtual glm::vec3 get_normal() const;
 	virtual glm::vec3 get_normal(const glm::vec3& p);
 
+	int object_id;					// used for collision debug
 protected:
 	glm::vec3 color;				// 只在简单版里用到
 	mutable Material* material_ptr; // mutable allows the const functions Compound::hit, Instance::hit, and RegularGrid::hit to assign to material_ptr

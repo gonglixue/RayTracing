@@ -20,6 +20,7 @@ public:
 	double t;						// ray parameter
 	float u, v;						// texture coordinate
 	// glm::vec3 dir;
+	int hit_object_id;				// used for debug
 	
 	ShadeRec();
 	ShadeRec(World& w);

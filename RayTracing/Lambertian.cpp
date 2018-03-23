@@ -55,6 +55,7 @@ glm::vec3 Lambertian::sample_f(const ShadeRec& sr, const glm::vec3 &wo, glm::vec
 	return (float)(invPI * kd) * cd;
 }
 
+// 系数 * 光源颜色
 glm::vec3 Lambertian::rho(const ShadeRec& sr, const glm::vec3& wo) const
 {
 	return (kd * cd);

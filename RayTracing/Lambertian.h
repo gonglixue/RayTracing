@@ -24,7 +24,7 @@ public:
 
 private:
 	float kd;
-	glm::vec3 cd;
+	glm::vec3 cd;	// ÑÕÉ«
 
 };
 

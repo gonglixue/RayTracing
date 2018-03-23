@@ -15,11 +15,11 @@ glm::vec3 RayCast::trace_ray(const Ray ray, const int depth) const
 	ShadeRec sr(world_ptr->hit_objects(ray));
 	if (sr.hit_an_object) {
 		sr.ray = ray;
-		printf("[hit]:ray.o(%f, %f, %f), ray.dir(%f,%f,%f)\n", ray.o.x, ray.o.y, ray.o.z, ray.d.x, ray.d.y, ray.d.z);
-		// return (sr.material_ptr->shade(sr));
-		return sr.color;
+		//printf("[hit]:ray.o(%f, %f, %f), ray.dir(%f,%f,%f)\n", ray.o.x, ray.o.y, ray.o.z, ray.d.x, ray.d.y, ray.d.z);
+		return (sr.material_ptr->shade(sr));
+		// return sr.color;
 	}
-	printf("no hit\n");
+	//printf("no hit\n");
 
 	return world_ptr->background_color;
 }

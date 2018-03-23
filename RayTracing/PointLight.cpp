@@ -40,7 +40,9 @@ PointLight::~PointLight() {
 
 glm::vec3 PointLight::get_direction(ShadeRec& s)
 {
-	return (location - s.hit_point);
+	glm::vec3 light_dir = location - s.hit_point;
+	light_dir = glm::normalize(light_dir);
+	return light_dir;
 }
 
 glm::vec3 PointLight::L(ShadeRec& sr)

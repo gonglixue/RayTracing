@@ -62,25 +62,28 @@ void World::build(const int width, const int height)
 	matte_ptr1->set_ka(0.25);		// 环境光反射系数
 	matte_ptr1->set_kd(0.65);		// 漫反射系数
 	matte_ptr1->set_cd(1, 1, 0);	// 颜色 黄
-	Sphere* sphere_ptr1 = new Sphere(glm::vec3(10, -5, 0), 27);
+	Sphere* sphere_ptr1 = new Sphere(glm::vec3(10, -5, 0), 30);
 	sphere_ptr1->set_material(matte_ptr1);
+	sphere_ptr1->object_id = 0;
 	this->add_object(sphere_ptr1);
 
 	Matte* matte_ptr2 = new Matte;
 	matte_ptr2->set_ka(0.15);
 	matte_ptr2->set_kd(0.85);
 	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
-	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 27);
+	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 30);
 	sphere_ptr2->set_material(matte_ptr2);
+	sphere_ptr2->object_id = 1;
 	this->add_object(sphere_ptr2);
 
 	Matte* matte_ptr3 = new Matte;
 	matte_ptr3->set_ka(0.15);
 	matte_ptr3->set_kd(0.5);
 	matte_ptr3->set_cd(0, 0.4, 0.2);				// dark green
-	Plane* plane_ptr = new Plane(glm::vec3(0, 0, -50), glm::vec3(0, 0, 1));
+	Plane* plane_ptr = new Plane(glm::vec3(0, -35, 0), glm::normalize(glm::vec3(0, 1, 0)));
 	plane_ptr->set_material(matte_ptr3);
-	// this->add_object(plane_ptr);
+	plane_ptr->object_id = 2;
+	//this->add_object(plane_ptr);
 
 	open_window(width, height);
 }
@@ -218,9 +221,18 @@ void World::open_window(const int hres, const int vres) const
 
 void World::display_pixel(int row, int col, const glm::vec3& color)
 {
-	frame_buffer[row * vp.hres * 3 + col * 3 + 0] = (GLubyte)(color.x * 255);
-	frame_buffer[row * vp.hres * 3 + col * 3 + 1] = (GLubyte)(color.y * 255);
-	frame_buffer[row * vp.hres * 3 + col * 3 + 2] = (GLubyte)(color.z * 255);
+	glm::vec3 temp = color;
+
+	temp.x = color.x < 0.0 ? 0.0 : color.x;
+	temp.y = color.y < 0.0 ? 0.0 : color.y;
+	temp.z = color.z < 0.0 ? 0.0 : color.z;
+
+	float max_component = max(color.x, max(color.y, color.z));
+	if (max_component > 1.0 && max_component>kEpsilon)
+		temp = (1.0f / max_component) * temp;
+	frame_buffer[row * vp.hres * 3 + col * 3 + 0] = (GLubyte)(temp.x * 255);
+	frame_buffer[row * vp.hres * 3 + col * 3 + 1] = (GLubyte)(temp.y * 255);
+	frame_buffer[row * vp.hres * 3 + col * 3 + 2] = (GLubyte)(temp.z * 255);
 }
 
 ShadeRec World::hit_bare_bones_objects(const Ray& ray)
@@ -257,15 +269,19 @@ ShadeRec World::hit_objects(const Ray& ray)
 			sr.material_ptr = objects[j]->get_material();
 			sr.hit_point = ray.o + t * ray.d;
 			sr.color = glm::vec3(1, 0, 0);
+			sr.hit_object_id = objects[j]->object_id;
 			normal = sr.normal;
 			local_hit_points = sr.local_hit_point;
+
+			// printf("ray:(%f %f %f) hit id: %d\n", ray.d.x, ray.d.y, ray.d.z, sr.hit_object_id);
 		}
 	}
 
+	//???
 	if (sr.hit_an_object)
 	{
 		sr.t = tmin;
-		sr.normal;
+		sr.normal = normal;
 		sr.local_hit_point = local_hit_points;
 	}
 	return sr;

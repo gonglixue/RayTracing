@@ -62,6 +62,7 @@ void Pinhole::render_scene(World& w)
 	glm::dvec2 pp;		// sample point on a pixel
 
 	int n = (int)sqrt((float)vp.get_num_samples());
+	// int n = 2;
 	
 	float pix_size = vp.get_pixel_size() / zoom;
 	ray.o = eye;
