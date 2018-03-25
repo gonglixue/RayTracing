@@ -152,6 +152,7 @@
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Directional.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="GlossySpecular.h" />
     <ClInclude Include="Jittered.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Directional.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="GlossySpecular.cpp" />
     <ClCompile Include="Jittered.cpp" />

@@ -66,9 +66,9 @@ Matte::~Matte(void) {
 glm::vec3 Matte::shade(ShadeRec& sr)
 {
 	glm::vec3 wo = -sr.ray.d;
-	//glm::vec3 L = ambient_brdf->rho(sr, wo) *
-		//sr.w.ambient_ptr->L(sr);		// 材质ambient颜色 * 环境光颜色
-	glm::vec3 L = glm::vec3(0, 0, 0);
+	glm::vec3 L = ambient_brdf->rho(sr, wo) *
+		sr.w.ambient_ptr->L(sr);		// 材质ambient颜色 * 环境光颜色
+	//glm::vec3 L = glm::vec3(0, 0, 0);
 	//printf("ambient color:(%f, %f, %f)\n", L.x, L.y, L.z);
 	const std::vector<Light*>& lights = sr.w.lights;
 	int num_lights = lights.size();

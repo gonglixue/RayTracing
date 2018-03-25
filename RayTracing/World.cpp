@@ -8,7 +8,9 @@
 #include "Ambient.h"
 #include "RayCast.h"
 #include "PointLight.h"
+#include "Directional.h"
 #include "Matte.h"
+#include "Phong.h"
 
 World::World()
 	:background_color(BLACK),
@@ -55,7 +57,14 @@ void World::build(const int width, const int height)
 	PointLight* light_ptr2 = new PointLight;
 	light_ptr2->set_location(100, 50, 150);
 	light_ptr2->scale_radiance(3.0);		//?
-	this->add_light(light_ptr2);
+	// this->add_light(light_ptr2);
+
+	// ·½Ïò¹â
+	Directional* light_ptr3 = new Directional;
+	light_ptr3->set_direction(20, 0, 20);
+	light_ptr3->scale_radiance(3.0);
+	add_light(light_ptr3);
+
 
 	// objects
 	Matte* matte_ptr1 = new Matte;
@@ -83,7 +92,18 @@ void World::build(const int width, const int height)
 	Plane* plane_ptr = new Plane(glm::vec3(0, -35, 0), glm::normalize(glm::vec3(0, 1, 0)));
 	plane_ptr->set_material(matte_ptr3);
 	plane_ptr->object_id = 2;
-	//this->add_object(plane_ptr);
+	this->add_object(plane_ptr);
+
+	Phong* phong_ptr = new Phong;
+	phong_ptr->set_ka(0.25);
+	phong_ptr->set_kd(0.6);
+	phong_ptr->set_cd(0.5);
+	phong_ptr->set_ks(0.2);
+	phong_ptr->set_exp(20);
+	Sphere* sphere_ptr3 = new Sphere(glm::vec3(-50, 0, -10), 30);
+	sphere_ptr3->set_material(phong_ptr);
+	sphere_ptr3->object_id = 3;
+	this->add_object(sphere_ptr3);
 
 	open_window(width, height);
 }

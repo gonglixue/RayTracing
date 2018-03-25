@@ -1,5 +1,5 @@
 #ifndef  __LAMBERTIAN_H__
-#define  __LAMBERTIAL_H__
+#define  __LAMBERTIAN_H__
 
 #include "BRDF.h"
 

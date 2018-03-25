@@ -99,6 +99,9 @@
     <ClInclude Include="Phong.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Directional.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -183,6 +186,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Phong.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Directional.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
