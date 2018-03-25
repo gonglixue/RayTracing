@@ -93,6 +93,12 @@
     <ClInclude Include="Matte.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GlossySpecular.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Phong.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -171,6 +177,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Matte.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GlossySpecular.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Phong.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

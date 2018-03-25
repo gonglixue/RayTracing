@@ -47,12 +47,12 @@ glm::vec3 BRDF::f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) 
 	return BLACK;
 }
 
-glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) const
+glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi) const
 {
 	return BLACK;
 }
 
-glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi, float& pdf) const
+glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi, float& pdf) const
 {
 	return BLACK;
 }

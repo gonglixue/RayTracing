@@ -16,9 +16,9 @@ public:
 	virtual glm::vec3
 		f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) const;
 	virtual glm::vec3
-		sample_f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) const;
+		sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi) const;
 	virtual glm::vec3
-		sample_f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi, float& pdf) const;
+		sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi, float& pdf) const;
 	virtual glm::vec3
 		rho(const ShadeRec& sr, const glm::vec3& wo) const;
 
