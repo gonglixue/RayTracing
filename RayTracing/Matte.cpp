@@ -78,14 +78,24 @@ glm::vec3 Matte::shade(ShadeRec& sr)
 		glm::vec3 wi = lights[j]->get_direction(sr);
 		float ndotwi = glm::dot(sr.normal, wi);
 
-		if (ndotwi > kEpsilon)	//该点对光源可见
-			L = L + (ndotwi * diffuse_brdf->f(sr, wo, wi) * lights[j]->L(sr));		// cos * (材质颜色 * 光源颜色）
-		else
-			printf("[%d]: %f %f %f光源不可见\n", sr.hit_object_id, sr.hit_point.x, sr.hit_point.y, sr.hit_point.z);
-		if (ndotwi > 1.0) {
-			printf("Error: ndotwi=%f\n", ndotwi);
-			exit(1);
+		if (ndotwi > 0.0) {	//该点对光源可见
+			bool in_shadows = false;
+			if (sr.w.lights[j]->casts_shadows()) {
+				Ray shadowRay(sr.hit_point, wi);
+				in_shadows = sr.w.lights[j]->in_shadow(shadowRay, sr);
+			}
+
+			if (!in_shadows)
+				L = L + (ndotwi * diffuse_brdf->f(sr, wo, wi) * lights[j]->L(sr));		// cos * (材质颜色 * 光源颜色）
+			else // test
+			{
+				//printf("in shadow \n");
+				//return glm::vec3(255, 0, 0);
+			}
 		}
+		//else
+			//printf("[%d]: %f %f %f光源不可见\n", sr.hit_object_id, sr.hit_point.x, sr.hit_point.y, sr.hit_point.z);
+
 	}
 	//return glm::vec3(1, 0, 0);
 	return L;

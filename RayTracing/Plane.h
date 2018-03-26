@@ -11,8 +11,8 @@ public:
 	
 	Plane& operator= (const Plane& rhs);
 	
-
 	virtual bool hit(const Ray& ray, double& t, ShadeRec& s) const;
+	virtual bool shadow_hit(const Ray& ray, float& t) const;
 private:
 	glm::dvec3 point;	//平面上的一个已知点
 	glm::dvec3 normal;	//平面法线

@@ -55,15 +55,17 @@ void World::build(const int width, const int height)
 
 	// 光源
 	PointLight* light_ptr2 = new PointLight;
-	light_ptr2->set_location(100, 50, 150);
+	light_ptr2->set_location(-100, 50, -10);
 	light_ptr2->scale_radiance(3.0);		//?
-	// this->add_light(light_ptr2);
+	light_ptr2->set_shadows(true);
+	this->add_light(light_ptr2);
 
 	// 方向光
 	Directional* light_ptr3 = new Directional;
-	light_ptr3->set_direction(20, 0, 20);
+	light_ptr3->set_direction(20, 0, -20);
 	light_ptr3->scale_radiance(3.0);
-	add_light(light_ptr3);
+	// light_ptr3->set_shadows(true);
+	//add_light(light_ptr3);
 
 
 	// objects
@@ -87,7 +89,7 @@ void World::build(const int width, const int height)
 
 	Matte* matte_ptr3 = new Matte;
 	matte_ptr3->set_ka(0.15);
-	matte_ptr3->set_kd(0.5);
+	matte_ptr3->set_kd(0.8);
 	matte_ptr3->set_cd(0, 0.4, 0.2);				// dark green
 	Plane* plane_ptr = new Plane(glm::vec3(0, -35, 0), glm::normalize(glm::vec3(0, 1, 0)));
 	plane_ptr->set_material(matte_ptr3);

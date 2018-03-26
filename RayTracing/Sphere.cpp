@@ -75,3 +75,36 @@ bool Sphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 
 	return false;
 }
+
+bool Sphere::shadow_hit(const Ray& ray, float& tmin) const
+{
+	double t;
+	glm::vec3 temp = ray.o - center;
+	double a = glm::dot(ray.d, ray.d);
+	double b = 2.0f * glm::dot(temp, glm::vec3(ray.d));
+	double c = glm::dot(temp, temp) - radius*radius;
+
+	double disc = b*b - 4 * a*c;
+
+	if (disc < 0.0)
+		return false;	// ²»ÕÚµ²¹âÔ´
+	else {
+		double e = sqrt(disc);
+		double denom = 2.0 * a;
+		t = (-b - e) / denom;    // smaller root
+
+		if (t > kEpsilon) {
+			tmin = t;
+			return (true);
+		}
+
+		t = (-b + e) / denom;    // larger root
+
+		if (t > kEpsilon) {
+			tmin = t;
+			return (true);
+		}
+	}
+
+	return false;
+}

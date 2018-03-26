@@ -58,3 +58,17 @@ bool Plane::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 	else
 		return false;
 }
+
+// if this object is block ray
+bool Plane::shadow_hit(const Ray& ray, float& tmin) const
+{
+	float t = glm::dot((point - ray.o), normal) /
+		(glm::dot(ray.d, normal));
+
+	if (t > kEpsilon) {
+		tmin = t;
+		return true;
+	}
+	else
+		return false;
+}

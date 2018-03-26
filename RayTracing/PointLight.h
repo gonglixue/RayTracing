@@ -23,6 +23,8 @@ public:
 	virtual glm::vec3 get_direction(ShadeRec& s);
 	virtual glm::vec3 L(ShadeRec& s);
 
+	virtual bool in_shadow(const Ray& ray, const ShadeRec& sr) const;
+
 private:
 	float ls;
 	glm::vec3 color;

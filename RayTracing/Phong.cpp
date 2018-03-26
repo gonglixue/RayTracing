@@ -86,8 +86,16 @@ glm::vec3 Phong::shade(ShadeRec& sr)
 		float ndotwi = glm::dot(sr.normal, wi);
 
 		if (ndotwi > 0.0) {
-			glm::vec3 temp = diffuse_brdf->f(sr, wo, wi) + specular_brdf->f(sr, wo, wi);
-			L += ndotwi * temp * (sr.w.lights[j]->L(sr));
+			bool in_shadow = false;
+			if (sr.w.lights[j]->casts_shadows()) {
+				Ray shadowRay(sr.hit_point, wi);
+				in_shadow = sr.w.lights[j]->in_shadow(shadowRay, sr);
+			}
+
+			if (!in_shadow) {
+				glm::vec3 temp = diffuse_brdf->f(sr, wo, wi) + specular_brdf->f(sr, wo, wi);
+				L += ndotwi * temp * (sr.w.lights[j]->L(sr));
+			}
 		}
 	}
 

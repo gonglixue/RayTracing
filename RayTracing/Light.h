@@ -16,6 +16,13 @@ public:
 	virtual glm::vec3 get_direction(ShadeRec& sr) = 0;	// 碰撞点指向光源
 
 	virtual glm::vec3 L(ShadeRec& sr);
+
+	virtual bool in_shadow(const Ray& ray, const ShadeRec& sr) const;
+	void set_shadows(bool isOpen) { shadows = isOpen; }
+	bool casts_shadows() { return shadows; }
+
+protected:
+	bool shadows;		// 该光源是否会投影阴影
 };
 
 #endif // ! __LIGHT__

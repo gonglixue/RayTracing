@@ -24,6 +24,8 @@ public:
 	virtual glm::vec3 get_direction(ShadeRec& sr);
 	virtual glm::vec3 L(ShadeRec& sr);
 
+	virtual bool in_shadow(const Ray& ray, const ShadeRec& sr) const;
+
 private:
 	float ls;			// scale radiance
 	glm::vec3 color;
