@@ -153,6 +153,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Directional.h" />
+    <ClInclude Include="Emissive.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="GlossySpecular.h" />
     <ClInclude Include="Jittered.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matte.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
     <ClInclude Include="Phong.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="SingleSphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Tracer.h" />
+    <ClInclude Include="Triangle.h" />
     <ClInclude Include="ViewPlane.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -192,6 +195,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="Matte.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
     <ClCompile Include="Phong.cpp" />
@@ -205,6 +209,7 @@
     <ClCompile Include="SingleSphere.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Tracer.cpp" />
+    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="ViewPlane.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

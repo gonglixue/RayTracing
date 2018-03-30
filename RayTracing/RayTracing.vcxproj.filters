@@ -102,6 +102,15 @@
     <ClInclude Include="Directional.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Emissive.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -189,6 +198,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Directional.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
