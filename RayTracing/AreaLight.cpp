@@ -80,6 +80,35 @@ glm::vec3 AreaLight::get_direction(ShadeRec& sr)
 glm::vec3 AreaLight::L(ShadeRec& sr)
 {
 	float ndotd = glm::dot(-light_normal, wi);
-	if(ndotd > 0.0)
-		return 
+	if (ndotd > 0.0)
+		return material_ptr->get_Le(sr);
+	else
+		return BLACK;
+}
+
+bool AreaLight::in_shadow(const Ray& ray, const ShadeRec& sr) const
+{
+	float t;
+	int num_objects = sr.w.objects.size();
+	float ts = glm::dot((sample_point - glm::vec3(ray.o)), glm::vec3(ray.d));
+
+	for(int j = 0; j < num_objects; j++)
+		if (sr.w.objects[j]->shadow_hit(ray, t) && (t < ts))
+			return true;
+
+	return false;
+}
+
+float AreaLight::G(const ShadeRec& sr) const
+{
+	// wi is sr.hit_point to area light's sampler_point
+	float ndotd = glm::dot(-light_normal, wi);
+	float d2 = glm::distance(sample_point, sr.hit_point);
+
+	return ndotd / (d2*d2);
+}
+
+float AreaLight::pdf(const ShadeRec& sr) const
+{
+	return object_ptr->pdf(sr);
 }
