@@ -19,6 +19,11 @@ public:
 	void set_cd(float c);
 
 	virtual glm::vec3 shade(ShadeRec& sr);
+	
+	virtual glm::vec3 area_light_shade(ShadeRec& sr);
+	virtual glm::vec3 path_shade(ShadeRec& sr);
+	virtual void set_sampler(Sampler* sampler_ptr);
+	virtual glm::vec3 global_shade(ShadeRec& sr);
 private:
 	Lambertian* ambient_brdf;
 	Lambertian* diffuse_brdf;

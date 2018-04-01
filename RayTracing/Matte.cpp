@@ -100,3 +100,26 @@ glm::vec3 Matte::shade(ShadeRec& sr)
 	//return glm::vec3(1, 0, 0);
 	return L;
 }
+
+glm::vec3 Matte::area_light_shade(ShadeRec& sr)
+{
+	glm::vec3 wo = -sr.ray.d;
+	glm::vec3 L = ambient_brdf->rho(sr, wo) *
+		sr.w.ambient_ptr->L(sr);
+
+	int num_lights = sr.w.lights.size();
+	for (int j = 0; j < num_lights; j++) {
+		glm::vec3 wi = sr.w.lights[j]->get_direction(sr);
+		float ndotwi = glm::dot(sr.normal, wi);
+
+		if (ndotwi > 0.0) {
+			bool in_shadow = false;
+			if (sr.w.lights[j]->casts_shadows()) {
+				Ray shadow_ray(sr.hit_point, wi);
+				in_shadow = sr.w.lights[j]->in_shadow(shadow_ray, sr);
+			}
+			if (!in_shadow)
+				L = L + (ndotwi / sr.w.lights[j]->pdf(sr))*(diffuse_brdf->f(sr, wo, wi) * sr.w.lights[j]->L(sr) * sr.w.lights[j]->G(sr));
+		}
+	}
+}

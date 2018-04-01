@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ambient.h" />
+    <ClInclude Include="AreaLight.h" />
     <ClInclude Include="BBox.h" />
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ambient.cpp" />
+    <ClCompile Include="AreaLight.cpp" />
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
