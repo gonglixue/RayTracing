@@ -123,3 +123,32 @@ glm::vec3 Matte::area_light_shade(ShadeRec& sr)
 		}
 	}
 }
+
+glm::vec3 Matte::path_shade(ShadeRec& sr)
+{
+	glm::vec3 wo = -sr.ray.d;
+	glm::vec3 wi;
+	float pdf;
+	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);
+	float ndotwi = glm::dot(sr.normal, wi);
+	Ray reflected_ray(sr.hit_point, wi);
+
+	return (ndotwi / pdf) * f * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1) ;
+}
+
+glm::vec3 Matte::global_shade(ShadeRec& sr)
+{
+	glm::vec3 L;
+	if (sr.depth == 0)
+		L = area_light_shade(sr);
+
+	glm::vec3 wi;
+	glm::vec3 wo = -sr.ray.d;
+	float pdf;
+	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);
+	float ndotwi = glm::dot(sr.normal, wi);
+	Ray reflected_ray(sr.hit_point, wi);
+
+	L = L + (ndotwi / pdf) * f * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1);
+	return L;
+}
