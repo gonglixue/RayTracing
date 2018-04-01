@@ -186,6 +186,7 @@
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Directional.cpp" />
+    <ClCompile Include="Emissive.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="GlossySpecular.cpp" />
     <ClCompile Include="Jittered.cpp" />
