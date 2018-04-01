@@ -63,6 +63,11 @@ Matte::~Matte(void) {
 	}
 }
 
+void Matte::set_sampler(Sampler* sampler_ptr)
+{
+	diffuse_brdf->set_sampler(sampler_ptr);
+}
+
 glm::vec3 Matte::shade(ShadeRec& sr)
 {
 	glm::vec3 wo = -sr.ray.d;
@@ -122,6 +127,8 @@ glm::vec3 Matte::area_light_shade(ShadeRec& sr)
 				L = L + (ndotwi / sr.w.lights[j]->pdf(sr))*(diffuse_brdf->f(sr, wo, wi) * sr.w.lights[j]->L(sr) * sr.w.lights[j]->G(sr));
 		}
 	}
+
+	return L;
 }
 
 glm::vec3 Matte::path_shade(ShadeRec& sr)
