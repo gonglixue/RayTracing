@@ -1,6 +1,7 @@
 #include "GeometricObject.h"
 #include "ShadeRec.h"
 #include "Material.h"
+#include "Sampler.h"
 
 GeometricObject::GeometricObject():color(BLACK)
 {}
@@ -91,6 +92,11 @@ inline void GeometricObject::set_shadows(bool isOpen) {
 }
 
 void GeometricObject::add_object(GeometricObject* object_ptr)
+{
+
+}
+
+void GeometricObject::set_sampler(Sampler* sampler)
 {
 
 }

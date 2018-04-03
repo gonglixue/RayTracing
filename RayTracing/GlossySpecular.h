@@ -28,12 +28,12 @@ public:
 	void set_sampler(Sampler* sp, float exp);   			// any type of sampling
 	void set_samples(const int num_samples, float exp); 	// multi jittered sampling
 
-	//void set_normal(const glm::vec3& n);
+	// void set_normal(const glm::vec3& n);
 private:
 	float ks;
 	glm::vec3 specular_color;
 	float exp;	// specular exponent
-	//Sampler *sampler;			//??
+	Sampler *sampler;			//??
 
 
 };

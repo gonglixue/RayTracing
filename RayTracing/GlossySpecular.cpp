@@ -31,7 +31,7 @@ GlossySpecular* GlossySpecular::clone() const
 void GlossySpecular::set_sampler(Sampler* sp, float _exp)
 {
 	sampler_ptr = sp;
-	exp = _exp;
+	//exp = _exp;
 	sampler_ptr->map_samples_to_hemisphere(exp);
 }
 

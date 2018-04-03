@@ -10,6 +10,7 @@
 
 class Material;
 class ShadeRec;
+class Sampler;
 
 class GeometricObject
 {
@@ -41,6 +42,8 @@ public:
 
 	// for combined object
 	virtual void add_object(GeometricObject* object_ptr);
+	
+	virtual void set_sampler(Sampler* sampler);
 
 	int object_id;					// used for collision debug
 protected:
