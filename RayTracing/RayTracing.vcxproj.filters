@@ -114,6 +114,9 @@
     <ClInclude Include="AreaLight.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -213,6 +216,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AreaLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
