@@ -154,6 +154,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Compound.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Directional.h" />
     <ClInclude Include="Emissive.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Compound.cpp" />
     <ClCompile Include="Directional.cpp" />
     <ClCompile Include="Emissive.cpp" />
     <ClCompile Include="GeometricObject.cpp" />

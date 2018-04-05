@@ -120,6 +120,9 @@
     <ClInclude Include="Box.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Compound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -225,6 +228,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Compound.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
