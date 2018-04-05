@@ -14,17 +14,17 @@ public:
 	virtual BBox get_bounding_box();
 
 	void read_flat_triangles(char* file_name);
-	void read_smooth_triangles(char* file_name);
+	//void read_smooth_triangles(char* file_name);
 	void tessellate_flat_sphere(const int horizontal_steps, const int vertical_steps);
 	void tessellate_smooth_sphere(const int horizontal_steps, const int vertical_steps);
 
-	virtual bool bit(const Ray& ray, double& tmin, ShadeRec& sr) const;
+	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr) const;
 	void setup_cells();
 
 	void store_material(Material* material, const int index);
-	void read_flat_uv_triangles(char* file_name);
-	void read_smooth_uv_triangles(char* file_name);
-	void read_uv_ply_file(char* file_name, const int triangle_type);
+	//void read_flat_uv_triangles(char* file_name);
+	//void read_smooth_uv_triangles(char* file_name);
+	//void read_uv_ply_file(char* file_name, const int triangle_type);
 
 private:
 	std::vector<GeometricObject*> cells;	// grid of cells, not objects. objects stored in base-class
@@ -36,7 +36,7 @@ private:
 	glm::vec3 find_min_bounds();
 	glm::vec3 find_max_bounds();
 
-	void read_ply_file(char* file_name, const int triangle_type);
+	// void read_ply_file(char* file_name, const int triangle_type);
 	void read_obj_file(char* file_name, const int triangle_type);
 	void compute_mesh_normals();
 	

@@ -214,6 +214,9 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 	const int LINE_LENGTH = 100;
 
 	int vert_num = 0, face_num = 0;
+	//std::vector<glm::vec3> vertices;
+	//std::vector<glm::ivec3> faces;
+	mesh_ptr->vertices.clear();
 
 	while (input_file) {
 		std::string type;
@@ -229,7 +232,8 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			vert_num++;
 			float x, y, z;
 			input_file >> x >> y >> z;
-			// TODO
+			// vertices.push_back(glm::vec3(x, y, z));
+			mesh_ptr->vertices.push_back(glm::vec3(x, y, z));
 
 			break;
 		}
@@ -237,7 +241,13 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			face_num++;
 			int i0, i1, i2;
 			input_file >> i0 >> i1 >> i2;
-			// TODO
+			//faces.push_back(glm::ivec3(i0 - 1, i1 - 1, i2 - 1));
+			if (tri_type == 0) // FLAT
+			{
+				FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, i0 - 1, i1 - 1, i2 - 1);
+				triangle_ptr->compute_normal(false);
+				objects.push_back(triangle_ptr);
+			}
 
 			break;
 		}
@@ -246,4 +256,19 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 				  
 		}
 	}
+	input_file.close();
+
+	// vertices info
+	mesh_ptr->num_vertices = vert_num;
+	
+
+	// faces info
+	mesh_ptr->num_triangles = face_num;
+
+	std::cout << "finish reading obj file\n";
+	std::cout << "num_vertices: " << mesh_ptr->vertices.size();
+	std::cout << "num_faces: " << this->objects.size();
+
+
+
 }
