@@ -65,4 +65,8 @@ inline void GeometricObject::set_color(float x, float y, float z)
 	set_color(new_color);
 }
 
+inline void GeometricObject::set_shadows(bool can_be_casted)
+{
+	this->shadows = can_be_casted;
+}
 #endif

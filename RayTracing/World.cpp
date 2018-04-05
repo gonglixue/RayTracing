@@ -11,7 +11,8 @@
 #include "Directional.h"
 #include "Matte.h"
 #include "Phong.h"
-
+#include "Emissive.h"
+#include "AreaLight.h"
 World::World()
 	:background_color(BLACK),
 	frame_buffer(NULL),
@@ -58,14 +59,19 @@ void World::build(const int width, const int height)
 	light_ptr2->set_location(-100, 50, -10);
 	light_ptr2->scale_radiance(3.0);		//?
 	light_ptr2->set_shadows(true);
-	this->add_light(light_ptr2);
+	//this->add_light(light_ptr2);
 
 	// 方向光
 	Directional* light_ptr3 = new Directional;
 	light_ptr3->set_direction(20, 0, -20);
 	light_ptr3->scale_radiance(3.0);
-	// light_ptr3->set_shadows(true);
-	//add_light(light_ptr3);
+	light_ptr3->set_shadows(true);
+	add_light(light_ptr3);
+
+	//自发光
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_radiance(40.0);
+	emissive_ptr->set_color(1.0, 1.0, 1.0);
 
 
 	// objects
@@ -83,7 +89,9 @@ void World::build(const int width, const int height)
 	matte_ptr2->set_kd(0.85);
 	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
 	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 30);
-	sphere_ptr2->set_material(matte_ptr2);
+	sphere_ptr2->set_material(emissive_ptr);
+	sphere_ptr2->set_shadows(false);
+	sphere_ptr2->set_sampler(new Jittered(20));
 	sphere_ptr2->object_id = 1;
 	this->add_object(sphere_ptr2);
 
@@ -106,6 +114,11 @@ void World::build(const int width, const int height)
 	sphere_ptr3->set_material(phong_ptr);
 	sphere_ptr3->object_id = 3;
 	this->add_object(sphere_ptr3);
+
+	AreaLight* area_light_ptr = new AreaLight;
+	area_light_ptr->set_object(sphere_ptr2);
+	area_light_ptr->set_shadows(true);
+	add_light(area_light_ptr);
 
 	open_window(width, height);
 }
