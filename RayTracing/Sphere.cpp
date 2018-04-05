@@ -78,6 +78,8 @@ bool Sphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 
 bool Sphere::shadow_hit(const Ray& ray, float& tmin) const
 {
+	if (!shadows)
+		return false;
 	double t;
 	glm::vec3 temp = ray.o - center;
 	double a = glm::dot(ray.d, ray.d);
@@ -107,4 +109,12 @@ bool Sphere::shadow_hit(const Ray& ray, float& tmin) const
 	}
 
 	return false;
+}
+
+glm::vec3 Sphere::get_normal(const glm::vec3& point)
+{
+	glm::vec3 n = point - glm::vec3(center);
+	n = glm::normalize(n);
+
+	return n;
 }

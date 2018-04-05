@@ -11,6 +11,10 @@
 #include "Directional.h"
 #include "Matte.h"
 #include "Phong.h"
+#include "Emissive.h"
+#include "AreaLight.h"
+#include "Rectangle.h"
+#include "Box.h"
 
 World::World()
 	:background_color(BLACK),
@@ -26,7 +30,11 @@ World::~World()
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
+<<<<<<< HEAD
 	int num_samples = 20;
+=======
+	int num_samples = 16;
+>>>>>>> b15207ba3c1e33daafd4be5a56256d5f3d94744d
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -37,6 +45,7 @@ void World::build(const int width, const int height)
 	background_color = BLACK;
 	tracer_ptr = new RayCast(this);
 
+<<<<<<< HEAD
 	//环境光
 	Ambient* _ambient_ptr = new Ambient;
 	_ambient_ptr->scale_radiance(1.0);
@@ -54,6 +63,87 @@ void World::build(const int width, const int height)
 }
 
 /* 去掉area light是正确的
+=======
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(-20, 10, 50);
+	pinhole->set_lookat(0, 2, 0);
+	pinhole->set_view_distance(1080);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_radiance(40.0);
+	emissive_ptr->set_color(1.0, 1.0, 1.0);
+
+	// define rectangle
+	float rec_width = 4.0;
+	float rec_height = 4.0;
+	glm::vec3 center(0.0, 7.0, -7.0);	// center of area light
+	glm::vec3 p0(-0.5 * rec_width, center.y - 0.5 * rec_height, center.z);
+	glm::vec3 a(rec_width, 0, 0);
+	glm::vec3 b(0, rec_height, 0);
+	glm::vec3 normal(0, 0, 1);
+
+	Rectangle* rectangle_ptr = new Rectangle(p0, a, b, normal);
+	rectangle_ptr->set_material(emissive_ptr);
+	rectangle_ptr->set_sampler(new Jittered(num_samples));
+	rectangle_ptr->set_shadows(false);
+	add_object(rectangle_ptr);
+
+	// arealight
+	AreaLight* area_light_ptr = new AreaLight;
+	area_light_ptr->set_object(rectangle_ptr);
+	area_light_ptr->set_shadows(true);
+	add_light(area_light_ptr);
+
+	// Four axis aligned boxes
+
+	float box_width = 1.0; 		// x dimension
+	float box_depth = 1.0; 		// z dimension
+	float box_height = 4.5; 		// y dimension
+	float gap = 3.0;
+
+	Matte* matte_ptr1 = new Matte;
+	matte_ptr1->set_ka(0.25);
+	matte_ptr1->set_kd(0.75);
+	matte_ptr1->set_cd(0.4, 0.7, 0.4);     // green
+
+	Box* box_ptr0 = new Box(glm::vec3(-1.5 * gap - 2.0 * box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(-1.5 * gap - box_width, box_height, 0.5 * box_depth));
+	box_ptr0->set_material(matte_ptr1);
+	add_object(box_ptr0);
+
+	Box* box_ptr1 = new Box(glm::vec3(-0.5 * gap - box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(-0.5 * gap, box_height, 0.5 * box_depth));
+	box_ptr1->set_material(matte_ptr1);
+	add_object(box_ptr1);
+
+	Box* box_ptr2 = new Box(glm::vec3(0.5 * gap, 0.0, -0.5 * box_depth),
+		glm::vec3(0.5 * gap + box_width, box_height, 0.5 * box_depth));
+	box_ptr2->set_material(matte_ptr1);
+	add_object(box_ptr2);
+
+	Box* box_ptr3 = new Box(glm::vec3(1.5 * gap + box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(1.5 * gap + 2.0 * box_width, box_height, 0.5 * box_depth));
+	box_ptr3->set_material(matte_ptr1);
+	add_object(box_ptr3);
+
+	// floor plane
+	Matte* matte_ptr2 = new Matte;
+	matte_ptr2->set_ka(0.1);
+	matte_ptr2->set_kd(0.90);
+	matte_ptr2->set_cd(1.0);
+
+	Plane* plane_ptr = new Plane(glm::vec3(0.0), glm::vec3(0, 1, 0));
+	plane_ptr->set_material(matte_ptr2);
+	add_object(plane_ptr);
+
+	open_window(width, height);
+}
+
+/* without area light
+>>>>>>> b15207ba3c1e33daafd4be5a56256d5f3d94744d
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -89,14 +179,19 @@ void World::build(const int width, const int height)
 	light_ptr2->set_location(-100, 50, -10);
 	light_ptr2->scale_radiance(3.0);		//?
 	light_ptr2->set_shadows(true);
-	this->add_light(light_ptr2);
+	//this->add_light(light_ptr2);
 
 	// 方向光
 	Directional* light_ptr3 = new Directional;
 	light_ptr3->set_direction(20, 0, -20);
 	light_ptr3->scale_radiance(3.0);
-	// light_ptr3->set_shadows(true);
-	//add_light(light_ptr3);
+	light_ptr3->set_shadows(true);
+	add_light(light_ptr3);
+
+	//自发光
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_radiance(40.0);
+	emissive_ptr->set_color(1.0, 1.0, 1.0);
 
 
 	// objects
@@ -114,7 +209,9 @@ void World::build(const int width, const int height)
 	matte_ptr2->set_kd(0.85);
 	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
 	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 30);
-	sphere_ptr2->set_material(matte_ptr2);
+	sphere_ptr2->set_material(emissive_ptr);
+	sphere_ptr2->set_shadows(false);
+	sphere_ptr2->set_sampler(new Jittered(20));
 	sphere_ptr2->object_id = 1;
 	this->add_object(sphere_ptr2);
 
@@ -137,6 +234,11 @@ void World::build(const int width, const int height)
 	sphere_ptr3->set_material(phong_ptr);
 	sphere_ptr3->object_id = 3;
 	this->add_object(sphere_ptr3);
+
+	AreaLight* area_light_ptr = new AreaLight;
+	area_light_ptr->set_object(sphere_ptr2);
+	area_light_ptr->set_shadows(true);
+	add_light(area_light_ptr);
 
 	open_window(width, height);
 }
@@ -256,6 +358,8 @@ void World::render_perspective()
 			ray.d = glm::normalize(ray.d);
 			pixel_color = tracer_ptr->trace_ray(ray);
 			display_pixel(r, c, pixel_color);
+
+			printf("(%d,%d)\n", c, r);
 		}
 	}
 

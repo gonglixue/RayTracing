@@ -3,7 +3,7 @@
 #include "Material.h"
 #include "Sampler.h"
 
-GeometricObject::GeometricObject():color(BLACK)
+GeometricObject::GeometricObject():color(BLACK),shadows(true)
 {}
 
 GeometricObject::GeometricObject(const GeometricObject& object)
@@ -87,9 +87,6 @@ bool GeometricObject::shadow_hit(const Ray& ray, float& t)const
 	return false;
 }
 
-inline void GeometricObject::set_shadows(bool isOpen) {
-	shadows = isOpen;
-}
 
 void GeometricObject::add_object(GeometricObject* object_ptr)
 {

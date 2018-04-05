@@ -50,6 +50,7 @@ glm::vec3 PointLight::L(ShadeRec& sr)
 	return ls * color;
 }
 
+// ray射线是否可看见光源
 bool PointLight::in_shadow(const Ray& ray, const ShadeRec& sr) const
 {
 	float t;

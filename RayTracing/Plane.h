@@ -13,6 +13,10 @@ public:
 	
 	virtual bool hit(const Ray& ray, double& t, ShadeRec& s) const;
 	virtual bool shadow_hit(const Ray& ray, float& t) const;
+
+	virtual glm::vec3 get_normal(const glm::vec3& point) {
+		return glm::normalize(normal);
+	}
 private:
 	glm::dvec3 point;	//平面上的一个已知点
 	glm::dvec3 normal;	//平面法线

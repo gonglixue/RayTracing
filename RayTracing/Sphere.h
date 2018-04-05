@@ -19,6 +19,8 @@ public:
 
 	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr) const;
 	virtual bool shadow_hit(const Ray& ray, float& t) const;
+	
+	virtual glm::vec3 get_normal(const glm::vec3& point);
 private:
 	glm::dvec3 center;
 	float radius;
