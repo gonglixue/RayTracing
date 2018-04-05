@@ -1,6 +1,10 @@
 #include "Box.h"
 #include "ShadeRec.h"
 
+Box::Box(void)
+	: x0(-1), x1(1), y0(-1), y1(1), z0(-1), z1(1)
+{}
+
 Box::Box(const double _x0, const double _x1,
 	const double _y0, const double _y1,
 	const double _z0, const double _z1)

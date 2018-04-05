@@ -30,7 +30,7 @@ World::~World()
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
-	int num_samples = 1;
+	int num_samples = 16;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -43,7 +43,7 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(-20, 10, 20);
+	pinhole->set_eye(-20, 10, 50);
 	pinhole->set_lookat(0, 2, 0);
 	pinhole->set_view_distance(1080);//到视平面距离
 	pinhole->compute_uvw();
@@ -334,6 +334,8 @@ void World::render_perspective()
 			ray.d = glm::normalize(ray.d);
 			pixel_color = tracer_ptr->trace_ray(ray);
 			display_pixel(r, c, pixel_color);
+
+			printf("(%d,%d)\n", c, r);
 		}
 	}
 
