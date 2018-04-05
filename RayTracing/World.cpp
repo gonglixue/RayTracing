@@ -26,6 +26,37 @@ World::~World()
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
+	int num_samples = 20;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(1.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 0, 850);
+	pinhole->set_lookat(-5, 0, 0);
+	pinhole->set_view_distance(850.0);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	
+}
+
+/* 去掉area light是正确的
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
 	int num_samples = 25;
 	vp.set_hres(width);
 	vp.set_vres(height);
@@ -109,6 +140,8 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
+*/
+
 /* without material
 void World::build(const int width, const int height)
 {
