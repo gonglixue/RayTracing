@@ -31,11 +31,13 @@ private:
 	int nx, ny, nz;		// number of cells
 	BBox bbox;			// bounding box ?
 	Mesh* mesh_ptr;		// store triangle data
+	bool reverse_normal;
 	
 	glm::vec3 find_min_bounds();
 	glm::vec3 find_max_bounds();
 
 	void read_ply_file(char* file_name, const int triangle_type);
+	void read_obj_file(char* file_name, const int triangle_type);
 	void compute_mesh_normals();
 	
 };
