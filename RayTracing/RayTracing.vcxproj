@@ -59,6 +59,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\GLconfig.props" />
+    <Import Project="..\glConfiguration.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Ambient.h" />
     <ClInclude Include="AreaLight.h" />
     <ClInclude Include="BBox.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RayCast.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShadeRec.h" />
     <ClInclude Include="SingleSphere.h" />
@@ -185,6 +188,7 @@
     <ClCompile Include="Ambient.cpp" />
     <ClCompile Include="AreaLight.cpp" />
     <ClCompile Include="BBox.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Directional.cpp" />
@@ -207,6 +211,7 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RayCast.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
     <ClCompile Include="SingleSphere.cpp" />
