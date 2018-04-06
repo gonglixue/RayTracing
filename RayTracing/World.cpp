@@ -18,6 +18,8 @@
 #include "Grid.h"
 #include "Reflective.h"
 #include "Whitted.h"
+#include "PathTrace.h"
+#include "ConcaveSphere.h"
 
 World::World()
 	:background_color(BLACK),
@@ -318,6 +320,7 @@ void World::build(const int width, const int height)
 }
 */
 
+/*
  //without area light
 void World::build(const int width, const int height)
 {
@@ -429,7 +432,7 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
-
+*/
 
 /* without material
 void World::build(const int width, const int height)
@@ -473,6 +476,111 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 }
 */
+
+
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 25;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new PathTrace(this);
+	//tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(0.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(70, 20, 70);
+	pinhole->set_lookat(-50, 20, -24);
+	pinhole->set_view_distance(100);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_color(WHITE);
+	emissive_ptr->set_radiance(1.5);
+	ConcaveSphere* sphere_ptr = new ConcaveSphere;
+	sphere_ptr->set_radius(10000.0);
+	sphere_ptr->set_shadows(false);
+	sphere_ptr->set_material(emissive_ptr);
+	add_object(sphere_ptr);
+
+	// 光源
+	PointLight* light_ptr2 = new PointLight;
+	light_ptr2->set_location(100, 50, 10);
+	light_ptr2->scale_radiance(3.0);		//?
+	light_ptr2->set_shadows(true);
+	this->add_light(light_ptr2);
+
+	float ka = 0.2;
+	Matte* matte_ptr1 = new Matte;
+	matte_ptr1->set_ka(ka);
+	matte_ptr1->set_kd(0.6);
+	matte_ptr1->set_cd(WHITE);
+	matte_ptr1->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr1 = new Sphere(glm::vec3(28, 20, -24), 20);
+	sphere_ptr1->set_material(matte_ptr1);
+	add_object(sphere_ptr1);
+
+	// small sphere
+	Matte* matte_ptr2 = new Matte;
+	matte_ptr2->set_ka(ka);
+	matte_ptr2->set_kd(0.5);
+	matte_ptr2->set_cd(0.85);				// gray
+	matte_ptr2->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr2 = new Sphere(glm::vec3(34, 12, 13), 12);
+	sphere_ptr2->set_material(matte_ptr2);
+	add_object(sphere_ptr2);
+
+	// medium sphere
+	Matte* matte_ptr3 = new Matte;
+	matte_ptr3->set_ka(ka);
+	matte_ptr3->set_kd(0.75);
+	matte_ptr3->set_cd(0.73, 0.22, 0.0);    // orange
+	matte_ptr3->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr3 = new Sphere(glm::vec3(-7, 15, 42), 16);
+	sphere_ptr3->set_material(matte_ptr3);
+	add_object(sphere_ptr3);
+
+	// box
+	Matte* matte_ptr5 = new Matte;
+	matte_ptr5->set_ka(ka);
+	matte_ptr5->set_kd(0.75);
+	matte_ptr5->set_cd(0.95);				// gray
+	matte_ptr5->set_sampler(new Jittered(num_samples));
+
+	Box* box_ptr = new Box(glm::vec3(-55, 0, -110), glm::vec3(-25, 60, 65));  // thicker
+	box_ptr->set_material(matte_ptr5);
+	add_object(box_ptr);
+
+	// ground plane
+	Matte* matte_ptr6 = new Matte;
+	matte_ptr6->set_ka(0.15);
+	matte_ptr6->set_kd(0.95);
+	matte_ptr6->set_cd(0.37, 0.43, 0.08);     // olive green
+	matte_ptr6->set_sampler(new Jittered(num_samples));
+
+	Plane* plane_ptr = new Plane(glm::vec3(0, 0.01, 0), glm::vec3(0, 1, 0));
+	plane_ptr->set_material(matte_ptr6);
+	add_object(plane_ptr);
+
+	open_window(width, height);
+}
+
 
 void World::render_scene()
 {

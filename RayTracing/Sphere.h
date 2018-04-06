@@ -22,7 +22,7 @@ public:
 	
 	virtual glm::vec3 get_normal(const glm::vec3& point);
 	virtual BBox get_bounding_box();
-private:
+protected:
 	glm::dvec3 center;
 	float radius;
 	//static double kEpsilon;

@@ -134,13 +134,14 @@ glm::vec3 Matte::area_light_shade(ShadeRec& sr)
 glm::vec3 Matte::path_shade(ShadeRec& sr)
 {
 	glm::vec3 wo = -sr.ray.d;
-	glm::vec3 wi;	// 上半球采样得到的反射光线，用于后续path trace
+	glm::vec3 wi;	// 在Lambertian brdf里进行上半球采样得到的反射光线，用于后续path trace
 	float pdf;
-	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);
+	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);	// 漫反射颜色（实际上与方向无关）
 	float ndotwi = glm::dot(sr.normal, wi);
 	Ray reflected_ray(sr.hit_point, wi);
 
 	return (ndotwi / pdf) * f * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1) ;
+	// 颜色的叠加：对应元素相乘
 }
 
 glm::vec3 Matte::global_shade(ShadeRec& sr)
