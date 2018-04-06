@@ -266,7 +266,7 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 }*/
 
-/*
+
 // build from obj
 void World::build(const int width, const int height)
 {
@@ -289,7 +289,7 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(800, 0, 850);
+	pinhole->set_eye(0, 100, 850);
 	pinhole->set_lookat(0, 0, 0);
 	pinhole->set_view_distance(850.0);//到视平面距离
 	pinhole->compute_uvw();
@@ -308,7 +308,7 @@ void World::build(const int width, const int height)
 	matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
 
 	Grid* grid_ptr = new Grid;
-	grid_ptr->read_flat_triangles("../cube.obj");
+	grid_ptr->read_flat_triangles("../scene01_tri.obj");
 	grid_ptr->set_shared_material_for_all(matte_ptr);
 
 	grid_ptr->setup_cells();
@@ -318,7 +318,7 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 
 }
-*/
+
 
 /*
  //without area light
@@ -477,7 +477,7 @@ void World::build(const int width, const int height)
 }
 */
 
-
+/*
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -580,6 +580,7 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
+*/
 
 
 void World::render_scene()

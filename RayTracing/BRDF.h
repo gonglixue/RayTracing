@@ -17,6 +17,7 @@ public:
 		f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) const;
 	virtual glm::vec3
 		sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi) const;
+	// 碰撞后，上半球采样计算反射光线wi，及其相应的概率
 	virtual glm::vec3
 		sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi, float& pdf) const;
 	virtual glm::vec3
