@@ -118,3 +118,15 @@ glm::vec3 Sphere::get_normal(const glm::vec3& point)
 
 	return n;
 }
+
+BBox Sphere::get_bounding_box()
+{
+	double delta = 0.0001;
+
+	BBox s_box(
+		center - glm::dvec3(radius + delta, radius + delta, radius + delta),
+		center + glm::dvec3(radius + delta, radius + delta, radius + delta)
+	);
+
+	return s_box;
+}

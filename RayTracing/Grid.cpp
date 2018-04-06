@@ -219,6 +219,11 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 	//std::vector<glm::ivec3> faces;
 	mesh_ptr->vertices.clear();
 
+	bool already_normalize = false;
+	glm::vec3 max_vert, min_vert;
+	max_vert = glm::vec3(-kHugeValue);
+	min_vert = glm::vec3(kHugeValue);
+
 	while (input_file) {
 		std::string type;
 		input_file >> type;	// ¶ÁÈ¡Ò»´Ê
@@ -236,6 +241,21 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			// vertices.push_back(glm::vec3(x, y, z));
 			mesh_ptr->vertices.push_back(glm::vec3(x, y, z));
 
+			{
+				if (x < min_vert.x)
+					min_vert.x = x;
+				if (x > max_vert.x)
+					max_vert.x = x;
+				if (y < min_vert.y)
+					min_vert.y = y;
+				if (y > max_vert.y)
+					max_vert.y = y;
+				if (z < min_vert.z)
+					min_vert.z = z;
+				if (z > max_vert.z)
+					max_vert.z = z;
+			}
+
 			break;
 		}
 		case 'f': {
@@ -243,6 +263,10 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			int i0, i1, i2;
 			input_file >> i0 >> i1 >> i2;
 			//faces.push_back(glm::ivec3(i0 - 1, i1 - 1, i2 - 1));
+			if (!already_normalize) {
+				mesh_ptr->Normailize_mesh(min_vert, max_vert, 150);
+				already_normalize = true;
+			}
 			if (tri_type == 0) // FLAT
 			{
 				FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, i0 - 1, i1 - 1, i2 - 1);
@@ -267,8 +291,8 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 	mesh_ptr->num_triangles = face_num;
 
 	std::cout << "finish reading obj file\n";
-	std::cout << "num_vertices: " << mesh_ptr->vertices.size();
-	std::cout << "num_faces: " << this->objects.size();
+	std::cout << "num_vertices: " << mesh_ptr->vertices.size() << std::endl;
+	std::cout << "num_faces: " << this->objects.size() << std::endl;
 
 }
 
@@ -457,4 +481,15 @@ void Grid::compute_mesh_normals()
 	mesh_ptr->normals.clear();
 	mesh_ptr->normals.reserve(mesh_ptr->num_vertices);
 	// TODO
+}
+
+void Grid::set_shared_material_for_all(Material* mat)
+{
+	std::cout << "set shared material for all objects in grid.\n";
+
+	int num_obj = get_num_objects();
+	for (int i = 0; i < num_obj; i++)
+	{
+		objects[i]->set_material(mat);
+	}
 }

@@ -32,3 +32,15 @@ Mesh::operator= (const Mesh& rhs) {
 }
 
 Mesh::~Mesh(void) {}
+
+void Mesh::Normailize_mesh(glm::vec3 min, glm::vec3 max, float length, glm::vec3 center )
+{
+	int num_v = this->vertices.size();
+
+	float scale = fmax(max.x - min.x, max.y - min.y);
+	scale = 1.0 / scale * length;
+	for (int i = 0; i < num_v; i++)
+	{
+		this->vertices[i] = scale * (this->vertices[i] - center);
+	}
+}

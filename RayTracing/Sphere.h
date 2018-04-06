@@ -21,6 +21,7 @@ public:
 	virtual bool shadow_hit(const Ray& ray, float& t) const;
 	
 	virtual glm::vec3 get_normal(const glm::vec3& point);
+	virtual BBox get_bounding_box();
 private:
 	glm::dvec3 center;
 	float radius;

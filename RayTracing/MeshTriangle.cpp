@@ -28,11 +28,12 @@ void MeshTriangle::compute_normal(bool reverse_normal)
 	glm::vec3 temp1 = mesh_ptr->vertices[index1] - mesh_ptr->vertices[index0];
 	glm::vec3 temp2 = mesh_ptr->vertices[index2] - mesh_ptr->vertices[index0];
 
-	glm::vec3 normal = glm::cross(temp1, temp2);
+	normal = glm::cross(temp1, temp2);
 	normal = glm::normalize(normal);
 
 	if (reverse_normal)
 		normal = -normal;
+
 }
 
 glm::vec3 MeshTriangle::get_normal() const

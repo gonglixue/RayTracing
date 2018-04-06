@@ -21,5 +21,7 @@ public:
 	Mesh(const Mesh& mesh);
 	~Mesh();
 	Mesh& operator= (const Mesh& rhs);
+
+	void Normailize_mesh(glm::vec3 min, glm::vec3 max, float length=200, glm::vec3 center=glm::vec3(0));
 };
 #endif // !__MESH_H__

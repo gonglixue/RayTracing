@@ -22,6 +22,7 @@ public:
 	void setup_cells();
 
 	void store_material(Material* material, const int index);
+	void set_shared_material_for_all(Material* material);
 	//void read_flat_uv_triangles(char* file_name);
 	//void read_smooth_uv_triangles(char* file_name);
 	//void read_uv_ply_file(char* file_name, const int triangle_type);
@@ -47,5 +48,7 @@ Grid::store_material(Material* material_ptr, const int index)
 {
 	objects[index]->set_material(material_ptr);
 }
+
+
 
 #endif // !__GRID_H__

@@ -15,6 +15,7 @@
 #include "AreaLight.h"
 #include "Rectangle.h"
 #include "Box.h"
+#include "Grid.h"
 
 World::World()
 	:background_color(BLACK),
@@ -27,6 +28,67 @@ World::World()
 World::~World()
 {}
 
+/*
+// buil ch22 with grid
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 1;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new RayCast(this);
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 0, 40);
+	pinhole->set_lookat(0, 0, 0);
+	pinhole->set_view_distance(100);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	// TODO
+	Directional* light_ptr = new Directional;
+	light_ptr->set_direction(-10, 20, 20);
+	light_ptr->scale_radiance(3.0);
+	light_ptr->set_shadows(false);
+	add_light(light_ptr);
+
+	int num_sphere = 100;
+	float volume = 0.1 / num_sphere;
+	float radius = 10.0f * pow(0.75 * volume / PI, 0.333);
+
+	Grid* grid_ptr = new Grid;
+	set_rand_seed(15);
+
+	for (int j = 0; j < num_sphere; j++)
+	{
+		Matte* matte_ptr = new Matte;
+		matte_ptr->set_ka(0.25);
+		matte_ptr->set_kd(0.75);
+		matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
+
+		Sphere* sphere_ptr = new Sphere;
+		sphere_ptr->set_radius(radius);
+		sphere_ptr->set_center(10 - 20*rand_float(), 10 - 20*rand_float(), 10 - 20*rand_float());
+		sphere_ptr->set_material(matte_ptr);
+		grid_ptr->add_object(sphere_ptr);
+	}
+	grid_ptr->setup_cells();
+
+	add_object(grid_ptr);
+	open_window(width, height);
+
+
+}
+*/
+
+/*
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -118,6 +180,7 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
+*/
 
 /* 去掉area light是正确的
 =======
@@ -197,10 +260,61 @@ void World::build(const int width, const int height)
 	add_object(plane_ptr);
 
 	open_window(width, height);
+}*/
+
+// build from obj
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 16;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(1.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(800, 0, 850);
+	pinhole->set_lookat(0, 0, 0);
+	pinhole->set_view_distance(850.0);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	// 光源
+	PointLight* light_ptr2 = new PointLight;
+	light_ptr2->set_location(200, 200, 200);
+	light_ptr2->scale_radiance(3.0);		//?
+	light_ptr2->set_shadows(true);
+	this->add_light(light_ptr2);
+
+	Matte* matte_ptr = new Matte;
+	matte_ptr->set_ka(0.25);
+	matte_ptr->set_kd(0.75);
+	matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
+
+	Grid* grid_ptr = new Grid;
+	grid_ptr->read_flat_triangles("../cube.obj");
+	grid_ptr->set_shared_material_for_all(matte_ptr);
+
+	grid_ptr->setup_cells();
+	
+	add_object(grid_ptr);
+
+	open_window(width, height);
+
 }
 
 /* without area light
->>>>>>> b15207ba3c1e33daafd4be5a56256d5f3d94744d
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -476,7 +590,7 @@ ShadeRec World::hit_objects(const Ray& ray)
 	glm::vec3 normal;
 	glm::vec3 local_hit_points;
 	float tmin = kHugeValue;
-	float num_objects = objects.size();
+	int num_objects = objects.size();
 
 	for (int j = 0; j < num_objects; j++) {
 		if (objects[j]->hit(ray, t, sr) && (t < tmin)) {
