@@ -189,6 +189,7 @@
     <ClInclude Include="Tracer.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="ViewPlane.h" />
+    <ClInclude Include="Whitted.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +234,7 @@
     <ClCompile Include="Tracer.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="ViewPlane.cpp" />
+    <ClCompile Include="Whitted.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
