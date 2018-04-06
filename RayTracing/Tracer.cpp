@@ -20,7 +20,7 @@ glm::vec3 Tracer::trace_ray(const Ray& ray) const
 	return BLACK;
 }
 
-glm::vec3 Tracer::trace_ray(const Ray ray, const int depth) const 
+glm::vec3 Tracer::trace_ray(const Ray& ray, const int depth) const 
 {
 	return BLACK;
 }

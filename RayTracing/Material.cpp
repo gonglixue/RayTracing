@@ -47,6 +47,7 @@ glm::vec3 Material::area_light_shade(ShadeRec& sr)
 }
 
 glm::vec3 Material::path_shade(ShadeRec& sr) {
+	printf("nonsense path_shade in Material\n");
 	return BLACK;
 }
 

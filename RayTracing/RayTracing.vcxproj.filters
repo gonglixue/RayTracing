@@ -132,6 +132,9 @@
     <ClInclude Include="FlatMeshTriangle.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PathTrace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -249,6 +252,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FlatMeshTriangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PathTrace.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

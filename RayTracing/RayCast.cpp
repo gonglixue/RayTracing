@@ -12,7 +12,7 @@ RayCast::~RayCast(){}
 
 
 // ray casting for other lights
-glm::vec3 RayCast::trace_ray(const Ray ray, const int depth) const
+glm::vec3 RayCast::trace_ray(const Ray& ray, const int depth) const
 {
 	ShadeRec sr(world_ptr->hit_objects(ray));
 	if (sr.hit_an_object) {

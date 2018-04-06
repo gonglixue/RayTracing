@@ -172,6 +172,7 @@
     <ClInclude Include="MeshTriangle.h" />
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
+    <ClInclude Include="PathTrace.h" />
     <ClInclude Include="Phong.h" />
     <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="MeshTriangle.cpp" />
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
+    <ClCompile Include="PathTrace.cpp" />
     <ClCompile Include="Phong.cpp" />
     <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
