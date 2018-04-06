@@ -134,7 +134,7 @@ glm::vec3 Matte::area_light_shade(ShadeRec& sr)
 glm::vec3 Matte::path_shade(ShadeRec& sr)
 {
 	glm::vec3 wo = -sr.ray.d;
-	glm::vec3 wi;
+	glm::vec3 wi;	// 上半球采样得到的反射光线，用于后续path trace
 	float pdf;
 	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);
 	float ndotwi = glm::dot(sr.normal, wi);
