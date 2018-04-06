@@ -33,6 +33,7 @@ Lambertian::operator= (const Lambertian& rhs)
 
 Lambertian::~Lambertian(){}
 
+// Lambertian 与入射光线无关
 glm::vec3 Lambertian::f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi) const
 {
 	float temp = invPI * this->kd;
@@ -48,7 +49,7 @@ glm::vec3 Lambertian::sample_f(const ShadeRec& sr, const glm::vec3 &wo, glm::vec
 
 	glm::vec3 sp = sampler_ptr->sample_hemisphere();
 	wi = sp.x * u + sp.y * v + sp.z * w;
-	wi = glm::normalize(wi);
+	wi = glm::normalize(wi);	// wi是上半球采样得到的反射光线
 
 	pdf = invPI * glm::dot(sr.normal, wi);
 

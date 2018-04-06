@@ -6,7 +6,7 @@ class RayCast :public Tracer {
 public:
 	RayCast(World* _world_ptr);
 	virtual ~RayCast();
-	virtual glm::vec3 trace_ray(const Ray ray, const int depth) const;
+	virtual glm::vec3 trace_ray(const Ray& ray, const int depth) const;
 
 };
 #endif // !__RAY_CAST_H__

@@ -18,7 +18,8 @@ public:
 	virtual glm::vec3 L(ShadeRec& sr);
 
 	virtual bool in_shadow(const Ray& ray, const ShadeRec& sr) const;	// sr是否能看见光源
-	void set_shadows(bool isOpen) { shadows = isOpen; }
+	// if light cast shadow
+	void set_shadows(bool isOpen) { shadows = isOpen; }	
 	bool casts_shadows() { return shadows; }
 
 	virtual float G(const ShadeRec& sr) const;

@@ -56,6 +56,7 @@ void GeometricObject::set_bounding_box()
 
 BBox GeometricObject::get_bounding_box()
 {
+	printf("nosense base function: GeometricObject::get_bounding_box()\n");
 	return BBox();
 }
 

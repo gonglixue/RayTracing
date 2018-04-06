@@ -14,7 +14,7 @@ public:
 	virtual ~Tracer();
 
 	virtual glm::vec3 trace_ray(const Ray& ray) const;  // 所有的派生类一定要实现基类的虚函数?
-	virtual glm::vec3 trace_ray(const Ray ray, const int depth) const;
+	virtual glm::vec3 trace_ray(const Ray& ray, const int depth) const;
 
 protected:
 	World* world_ptr;

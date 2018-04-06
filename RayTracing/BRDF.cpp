@@ -49,15 +49,18 @@ glm::vec3 BRDF::f(const ShadeRec& sr, const glm::vec3& wo, const glm::vec3& wi) 
 
 glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi) const
 {
+	printf("nonsense BRDF::sample_f1\n");
 	return BLACK;
 }
 
 glm::vec3 BRDF::sample_f(const ShadeRec& sr, const glm::vec3& wo, glm::vec3& wi, float& pdf) const
 {
+	printf("nonsemse BRDF::sample_f2\n");
 	return BLACK;
 }
 
 glm::vec3 BRDF::rho(const ShadeRec& sr, const glm::vec3& wo) const
 {
+	printf("nonsense BRDF::rho\n");
 	return BLACK;
 }

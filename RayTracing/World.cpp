@@ -15,6 +15,11 @@
 #include "AreaLight.h"
 #include "Rectangle.h"
 #include "Box.h"
+#include "Grid.h"
+#include "Reflective.h"
+#include "Whitted.h"
+#include "PathTrace.h"
+#include "ConcaveSphere.h"
 
 World::World()
 	:background_color(BLACK),
@@ -27,6 +32,67 @@ World::World()
 World::~World()
 {}
 
+/*
+// buil ch22 with grid
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 1;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new RayCast(this);
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 0, 40);
+	pinhole->set_lookat(0, 0, 0);
+	pinhole->set_view_distance(100);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	// TODO
+	Directional* light_ptr = new Directional;
+	light_ptr->set_direction(-10, 20, 20);
+	light_ptr->scale_radiance(3.0);
+	light_ptr->set_shadows(false);
+	add_light(light_ptr);
+
+	int num_sphere = 100;
+	float volume = 0.1 / num_sphere;
+	float radius = 10.0f * pow(0.75 * volume / PI, 0.333);
+
+	Grid* grid_ptr = new Grid;
+	set_rand_seed(15);
+
+	for (int j = 0; j < num_sphere; j++)
+	{
+		Matte* matte_ptr = new Matte;
+		matte_ptr->set_ka(0.25);
+		matte_ptr->set_kd(0.75);
+		matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
+
+		Sphere* sphere_ptr = new Sphere;
+		sphere_ptr->set_radius(radius);
+		sphere_ptr->set_center(10 - 20*rand_float(), 10 - 20*rand_float(), 10 - 20*rand_float());
+		sphere_ptr->set_material(matte_ptr);
+		grid_ptr->add_object(sphere_ptr);
+	}
+	grid_ptr->setup_cells();
+
+	add_object(grid_ptr);
+	open_window(width, height);
+
+
+}
+*/
+
+/*
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -118,8 +184,144 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
+*/
 
-/* without area light
+/* 去掉area light是正确的
+=======
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(-20, 10, 50);
+	pinhole->set_lookat(0, 2, 0);
+	pinhole->set_view_distance(1080);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_radiance(40.0);
+	emissive_ptr->set_color(1.0, 1.0, 1.0);
+
+	// define rectangle
+	float rec_width = 4.0;
+	float rec_height = 4.0;
+	glm::vec3 center(0.0, 7.0, -7.0);	// center of area light
+	glm::vec3 p0(-0.5 * rec_width, center.y - 0.5 * rec_height, center.z);
+	glm::vec3 a(rec_width, 0, 0);
+	glm::vec3 b(0, rec_height, 0);
+	glm::vec3 normal(0, 0, 1);
+
+	Rectangle* rectangle_ptr = new Rectangle(p0, a, b, normal);
+	rectangle_ptr->set_material(emissive_ptr);
+	rectangle_ptr->set_sampler(new Jittered(num_samples));
+	rectangle_ptr->set_shadows(false);
+	add_object(rectangle_ptr);
+
+	// arealight
+	AreaLight* area_light_ptr = new AreaLight;
+	area_light_ptr->set_object(rectangle_ptr);
+	area_light_ptr->set_shadows(true);
+	add_light(area_light_ptr);
+
+	// Four axis aligned boxes
+
+	float box_width = 1.0; 		// x dimension
+	float box_depth = 1.0; 		// z dimension
+	float box_height = 4.5; 		// y dimension
+	float gap = 3.0;
+
+	Matte* matte_ptr1 = new Matte;
+	matte_ptr1->set_ka(0.25);
+	matte_ptr1->set_kd(0.75);
+	matte_ptr1->set_cd(0.4, 0.7, 0.4);     // green
+
+	Box* box_ptr0 = new Box(glm::vec3(-1.5 * gap - 2.0 * box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(-1.5 * gap - box_width, box_height, 0.5 * box_depth));
+	box_ptr0->set_material(matte_ptr1);
+	add_object(box_ptr0);
+
+	Box* box_ptr1 = new Box(glm::vec3(-0.5 * gap - box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(-0.5 * gap, box_height, 0.5 * box_depth));
+	box_ptr1->set_material(matte_ptr1);
+	add_object(box_ptr1);
+
+	Box* box_ptr2 = new Box(glm::vec3(0.5 * gap, 0.0, -0.5 * box_depth),
+		glm::vec3(0.5 * gap + box_width, box_height, 0.5 * box_depth));
+	box_ptr2->set_material(matte_ptr1);
+	add_object(box_ptr2);
+
+	Box* box_ptr3 = new Box(glm::vec3(1.5 * gap + box_width, 0.0, -0.5 * box_depth),
+		glm::vec3(1.5 * gap + 2.0 * box_width, box_height, 0.5 * box_depth));
+	box_ptr3->set_material(matte_ptr1);
+	add_object(box_ptr3);
+
+	// floor plane
+	Matte* matte_ptr2 = new Matte;
+	matte_ptr2->set_ka(0.1);
+	matte_ptr2->set_kd(0.90);
+	matte_ptr2->set_cd(1.0);
+
+	Plane* plane_ptr = new Plane(glm::vec3(0.0), glm::vec3(0, 1, 0));
+	plane_ptr->set_material(matte_ptr2);
+	add_object(plane_ptr);
+
+	open_window(width, height);
+}*/
+
+
+// build from obj
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 16;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(1.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 100, 850);
+	pinhole->set_lookat(0, 0, 0);
+	pinhole->set_view_distance(850.0);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	// 光源
+	PointLight* light_ptr2 = new PointLight;
+	light_ptr2->set_location(200, 200, 200);
+	light_ptr2->scale_radiance(3.0);		//?
+	light_ptr2->set_shadows(true);
+	this->add_light(light_ptr2);
+
+	Matte* matte_ptr = new Matte;
+	matte_ptr->set_ka(0.25);
+	matte_ptr->set_kd(0.75);
+	matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
+
+	Grid* grid_ptr = new Grid;
+	grid_ptr->read_flat_triangles("../scene01_tri.obj");
+	grid_ptr->set_shared_material_for_all(matte_ptr);
+
+	grid_ptr->setup_cells();
+	
+	add_object(grid_ptr);
+
+	open_window(width, height);
+
+}
+
+
+/*
+ //without area light
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -135,11 +337,12 @@ void World::build(const int width, const int height)
 	background_color = BLACK;
 	//tracer_ptr = new SingleSphere(this);
 	//tracer_ptr = new MultipleObjects(this);
-	tracer_ptr = new RayCast(this);
+	// tracer_ptr = new RayCast(this);
+	tracer_ptr = new Whitted(this);
 
 	//环境光
 	Ambient* _ambient_ptr = new Ambient;
-	_ambient_ptr->scale_radiance(1.0);
+	_ambient_ptr->scale_radiance(0.5);
 	this->ambient_ptr = _ambient_ptr;
 
 	// camera
@@ -155,7 +358,7 @@ void World::build(const int width, const int height)
 	light_ptr2->set_location(-100, 50, -10);
 	light_ptr2->scale_radiance(3.0);		//?
 	light_ptr2->set_shadows(true);
-	//this->add_light(light_ptr2);
+	this->add_light(light_ptr2);
 
 	// 方向光
 	Directional* light_ptr3 = new Directional;
@@ -171,12 +374,22 @@ void World::build(const int width, const int height)
 
 
 	// objects
+	Reflective* reflective_ptr1 = new Reflective;
+	reflective_ptr1->set_ka(0.25);	// 环境光系数
+	reflective_ptr1->set_kd(0.5);	// 漫反射稀疏
+	reflective_ptr1->set_cd(0.75, 0.75, 0);	// yellow
+	reflective_ptr1->set_ks(0.15);			// phong模型的specular系数
+	reflective_ptr1->set_exp(100.0);
+	reflective_ptr1->set_kr(0.75);
+	reflective_ptr1->set_color(WHITE);
+
 	Matte* matte_ptr1 = new Matte;
 	matte_ptr1->set_ka(0.25);		// 环境光反射系数
 	matte_ptr1->set_kd(0.65);		// 漫反射系数
 	matte_ptr1->set_cd(1, 1, 0);	// 颜色 黄
 	Sphere* sphere_ptr1 = new Sphere(glm::vec3(10, -5, 0), 30);
 	sphere_ptr1->set_material(matte_ptr1);
+	//sphere_ptr1->set_material(reflective_ptr1);
 	sphere_ptr1->object_id = 0;
 	this->add_object(sphere_ptr1);
 
@@ -185,7 +398,7 @@ void World::build(const int width, const int height)
 	matte_ptr2->set_kd(0.85);
 	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
 	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 30);
-	sphere_ptr2->set_material(emissive_ptr);
+	sphere_ptr2->set_material(matte_ptr2);
 	sphere_ptr2->set_shadows(false);
 	sphere_ptr2->set_sampler(new Jittered(20));
 	sphere_ptr2->object_id = 1;
@@ -196,7 +409,8 @@ void World::build(const int width, const int height)
 	matte_ptr3->set_kd(0.8);
 	matte_ptr3->set_cd(0, 0.4, 0.2);				// dark green
 	Plane* plane_ptr = new Plane(glm::vec3(0, -35, 0), glm::normalize(glm::vec3(0, 1, 0)));
-	plane_ptr->set_material(matte_ptr3);
+	// plane_ptr->set_material(matte_ptr3);
+	plane_ptr->set_material(reflective_ptr1);
 	plane_ptr->object_id = 2;
 	this->add_object(plane_ptr);
 
@@ -211,10 +425,10 @@ void World::build(const int width, const int height)
 	sphere_ptr3->object_id = 3;
 	this->add_object(sphere_ptr3);
 
-	AreaLight* area_light_ptr = new AreaLight;
-	area_light_ptr->set_object(sphere_ptr2);
-	area_light_ptr->set_shadows(true);
-	add_light(area_light_ptr);
+	//AreaLight* area_light_ptr = new AreaLight;
+	//area_light_ptr->set_object(sphere_ptr2);
+	//area_light_ptr->set_shadows(true);
+	//add_light(area_light_ptr);
 
 	open_window(width, height);
 }
@@ -262,6 +476,112 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 }
 */
+
+/*
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 25;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new PathTrace(this);
+	//tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(0.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(70, 20, 70);
+	pinhole->set_lookat(-50, 20, -24);
+	pinhole->set_view_distance(100);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_color(WHITE);
+	emissive_ptr->set_radiance(1.5);
+	ConcaveSphere* sphere_ptr = new ConcaveSphere;
+	sphere_ptr->set_radius(10000.0);
+	sphere_ptr->set_shadows(false);
+	sphere_ptr->set_material(emissive_ptr);
+	add_object(sphere_ptr);
+
+	// 光源
+	PointLight* light_ptr2 = new PointLight;
+	light_ptr2->set_location(100, 50, 10);
+	light_ptr2->scale_radiance(3.0);		//?
+	light_ptr2->set_shadows(true);
+	this->add_light(light_ptr2);
+
+	float ka = 0.2;
+	Matte* matte_ptr1 = new Matte;
+	matte_ptr1->set_ka(ka);
+	matte_ptr1->set_kd(0.6);
+	matte_ptr1->set_cd(WHITE);
+	matte_ptr1->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr1 = new Sphere(glm::vec3(28, 20, -24), 20);
+	sphere_ptr1->set_material(matte_ptr1);
+	add_object(sphere_ptr1);
+
+	// small sphere
+	Matte* matte_ptr2 = new Matte;
+	matte_ptr2->set_ka(ka);
+	matte_ptr2->set_kd(0.5);
+	matte_ptr2->set_cd(0.85);				// gray
+	matte_ptr2->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr2 = new Sphere(glm::vec3(34, 12, 13), 12);
+	sphere_ptr2->set_material(matte_ptr2);
+	add_object(sphere_ptr2);
+
+	// medium sphere
+	Matte* matte_ptr3 = new Matte;
+	matte_ptr3->set_ka(ka);
+	matte_ptr3->set_kd(0.75);
+	matte_ptr3->set_cd(0.73, 0.22, 0.0);    // orange
+	matte_ptr3->set_sampler(new Jittered(num_samples));
+
+	Sphere* sphere_ptr3 = new Sphere(glm::vec3(-7, 15, 42), 16);
+	sphere_ptr3->set_material(matte_ptr3);
+	add_object(sphere_ptr3);
+
+	// box
+	Matte* matte_ptr5 = new Matte;
+	matte_ptr5->set_ka(ka);
+	matte_ptr5->set_kd(0.75);
+	matte_ptr5->set_cd(0.95);				// gray
+	matte_ptr5->set_sampler(new Jittered(num_samples));
+
+	Box* box_ptr = new Box(glm::vec3(-55, 0, -110), glm::vec3(-25, 60, 65));  // thicker
+	box_ptr->set_material(matte_ptr5);
+	add_object(box_ptr);
+
+	// ground plane
+	Matte* matte_ptr6 = new Matte;
+	matte_ptr6->set_ka(0.15);
+	matte_ptr6->set_kd(0.95);
+	matte_ptr6->set_cd(0.37, 0.43, 0.08);     // olive green
+	matte_ptr6->set_sampler(new Jittered(num_samples));
+
+	Plane* plane_ptr = new Plane(glm::vec3(0, 0.01, 0), glm::vec3(0, 1, 0));
+	plane_ptr->set_material(matte_ptr6);
+	add_object(plane_ptr);
+
+	open_window(width, height);
+}
+*/
+
 
 void World::render_scene()
 {
@@ -395,7 +715,7 @@ ShadeRec World::hit_objects(const Ray& ray)
 	glm::vec3 normal;
 	glm::vec3 local_hit_points;
 	float tmin = kHugeValue;
-	float num_objects = objects.size();
+	int num_objects = objects.size();
 
 	for (int j = 0; j < num_objects; j++) {
 		if (objects[j]->hit(ray, t, sr) && (t < tmin)) {

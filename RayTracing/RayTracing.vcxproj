@@ -154,11 +154,15 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="BRDF.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Compound.h" />
+    <ClInclude Include="ConcaveSphere.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Directional.h" />
     <ClInclude Include="Emissive.h" />
+    <ClInclude Include="FlatMeshTriangle.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="GlossySpecular.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Jittered.h" />
     <ClInclude Include="Lambertian.h" />
     <ClInclude Include="Light.h" />
@@ -166,8 +170,11 @@
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matte.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshTriangle.h" />
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
+    <ClInclude Include="PathTrace.h" />
+    <ClInclude Include="PerfectSpecular.h" />
     <ClInclude Include="Phong.h" />
     <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
@@ -175,6 +182,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RayCast.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Reflective.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShadeRec.h" />
     <ClInclude Include="SingleSphere.h" />
@@ -182,6 +190,7 @@
     <ClInclude Include="Tracer.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="ViewPlane.h" />
+    <ClInclude Include="Whitted.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,10 +200,14 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BRDF.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Compound.cpp" />
+    <ClCompile Include="ConcaveSphere.cpp" />
     <ClCompile Include="Directional.cpp" />
     <ClCompile Include="Emissive.cpp" />
+    <ClCompile Include="FlatMeshTriangle.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="GlossySpecular.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Jittered.cpp" />
     <ClCompile Include="Lambertian.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -203,8 +216,11 @@
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="Matte.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshTriangle.cpp" />
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
+    <ClCompile Include="PathTrace.cpp" />
+    <ClCompile Include="PerfectSpecular.cpp" />
     <ClCompile Include="Phong.cpp" />
     <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -212,6 +228,7 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Reflective.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
     <ClCompile Include="SingleSphere.cpp" />
@@ -219,6 +236,7 @@
     <ClCompile Include="Tracer.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="ViewPlane.cpp" />
+    <ClCompile Include="Whitted.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
