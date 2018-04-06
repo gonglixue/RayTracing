@@ -16,6 +16,8 @@
 #include "Rectangle.h"
 #include "Box.h"
 #include "Grid.h"
+#include "Reflective.h"
+#include "Whitted.h"
 
 World::World()
 	:background_color(BLACK),
@@ -262,6 +264,7 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 }*/
 
+/*
 // build from obj
 void World::build(const int width, const int height)
 {
@@ -313,8 +316,9 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 
 }
+*/
 
-/* without area light
+ //without area light
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
@@ -330,11 +334,12 @@ void World::build(const int width, const int height)
 	background_color = BLACK;
 	//tracer_ptr = new SingleSphere(this);
 	//tracer_ptr = new MultipleObjects(this);
-	tracer_ptr = new RayCast(this);
+	// tracer_ptr = new RayCast(this);
+	tracer_ptr = new Whitted(this);
 
 	//环境光
 	Ambient* _ambient_ptr = new Ambient;
-	_ambient_ptr->scale_radiance(1.0);
+	_ambient_ptr->scale_radiance(0.5);
 	this->ambient_ptr = _ambient_ptr;
 
 	// camera
@@ -350,7 +355,7 @@ void World::build(const int width, const int height)
 	light_ptr2->set_location(-100, 50, -10);
 	light_ptr2->scale_radiance(3.0);		//?
 	light_ptr2->set_shadows(true);
-	//this->add_light(light_ptr2);
+	this->add_light(light_ptr2);
 
 	// 方向光
 	Directional* light_ptr3 = new Directional;
@@ -366,12 +371,22 @@ void World::build(const int width, const int height)
 
 
 	// objects
+	Reflective* reflective_ptr1 = new Reflective;
+	reflective_ptr1->set_ka(0.25);	// 环境光系数
+	reflective_ptr1->set_kd(0.5);	// 漫反射稀疏
+	reflective_ptr1->set_cd(0.75, 0.75, 0);	// yellow
+	reflective_ptr1->set_ks(0.15);			// phong模型的specular系数
+	reflective_ptr1->set_exp(100.0);
+	reflective_ptr1->set_kr(0.75);
+	reflective_ptr1->set_color(WHITE);
+
 	Matte* matte_ptr1 = new Matte;
 	matte_ptr1->set_ka(0.25);		// 环境光反射系数
 	matte_ptr1->set_kd(0.65);		// 漫反射系数
 	matte_ptr1->set_cd(1, 1, 0);	// 颜色 黄
 	Sphere* sphere_ptr1 = new Sphere(glm::vec3(10, -5, 0), 30);
 	sphere_ptr1->set_material(matte_ptr1);
+	//sphere_ptr1->set_material(reflective_ptr1);
 	sphere_ptr1->object_id = 0;
 	this->add_object(sphere_ptr1);
 
@@ -380,7 +395,7 @@ void World::build(const int width, const int height)
 	matte_ptr2->set_kd(0.85);
 	matte_ptr2->set_cd(0.71, 0.40, 0.16);   		// brown
 	Sphere* sphere_ptr2 = new Sphere(glm::vec3(-25, 10, -35), 30);
-	sphere_ptr2->set_material(emissive_ptr);
+	sphere_ptr2->set_material(matte_ptr2);
 	sphere_ptr2->set_shadows(false);
 	sphere_ptr2->set_sampler(new Jittered(20));
 	sphere_ptr2->object_id = 1;
@@ -391,7 +406,8 @@ void World::build(const int width, const int height)
 	matte_ptr3->set_kd(0.8);
 	matte_ptr3->set_cd(0, 0.4, 0.2);				// dark green
 	Plane* plane_ptr = new Plane(glm::vec3(0, -35, 0), glm::normalize(glm::vec3(0, 1, 0)));
-	plane_ptr->set_material(matte_ptr3);
+	// plane_ptr->set_material(matte_ptr3);
+	plane_ptr->set_material(reflective_ptr1);
 	plane_ptr->object_id = 2;
 	this->add_object(plane_ptr);
 
@@ -406,14 +422,14 @@ void World::build(const int width, const int height)
 	sphere_ptr3->object_id = 3;
 	this->add_object(sphere_ptr3);
 
-	AreaLight* area_light_ptr = new AreaLight;
-	area_light_ptr->set_object(sphere_ptr2);
-	area_light_ptr->set_shadows(true);
-	add_light(area_light_ptr);
+	//AreaLight* area_light_ptr = new AreaLight;
+	//area_light_ptr->set_object(sphere_ptr2);
+	//area_light_ptr->set_shadows(true);
+	//add_light(area_light_ptr);
 
 	open_window(width, height);
 }
-*/
+
 
 /* without material
 void World::build(const int width, const int height)
