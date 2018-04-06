@@ -14,7 +14,8 @@
 
 #include "Matte.h"
 #include "Emissive.h"
-
+#include "Reflective.h"
+#include "Jittered.h"
 
 Grid::Grid()
 	:Compound(),
@@ -215,6 +216,9 @@ void Grid::read_flat_triangles(char* file_name)
 
 void Grid::read_obj_file(char* file_name, const int tri_type)
 {
+	//test
+	construct_material_byhand();
+
 	std::ifstream input_file(file_name);
 	const int LINE_LENGTH = 100;
 
@@ -230,6 +234,8 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 
 	//Compound* component;
 	bool begining = true;
+	int mtl_state = -1;
+
 
 	while (input_file) {
 		std::string type;
@@ -269,23 +275,20 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			face_num++;
 			int i0, i1, i2;
 			input_file >> i0 >> i1 >> i2;
-			//faces.push_back(glm::ivec3(i0 - 1, i1 - 1, i2 - 1));
-			if (!already_normalize) {
-				mesh_ptr->Normailize_mesh(min_vert, max_vert, 150);
-				already_normalize = true;
-			}
+
 			if (tri_type == 0) // FLAT
 			{
 				FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, i0 - 1, i1 - 1, i2 - 1);
-				triangle_ptr->compute_normal(false);
+				//triangle_ptr->compute_normal(false);
+				//triangle_ptr->set_material(store_mtls[mtl_state]);
 				objects.push_back(triangle_ptr);
 				//component->add_object(triangle_ptr);
 			}
 
 			break;
 		}
-		case 'g': {
-
+		case 'u': {
+			mtl_state++;
 		}
 		default:
 			break;
@@ -300,6 +303,11 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 
 	// faces info
 	mesh_ptr->num_triangles = face_num;
+
+	mesh_ptr->Normailize_mesh(min_vert, max_vert, 150);
+	for (int i = 0; i < objects.size(); i++) {
+		dynamic_cast<FlatMeshTriangle*>(objects[i])->compute_normal(false);
+	}
 
 	std::cout << "finish reading obj file\n";
 	std::cout << "num_vertices: " << mesh_ptr->vertices.size() << std::endl;
@@ -507,5 +515,48 @@ void Grid::set_shared_material_for_all(Material* mat)
 
 void Grid::construct_material_byhand()
 {
-	Matte* 
+	Jittered* sampler_ptr = new Jittered(16);
+
+	Matte* matte_floor = new Matte;
+	matte_floor->set_cd(1.0);
+	matte_floor->set_ka(0);
+	matte_floor->set_kd(0.5);
+	matte_floor->set_sampler(sampler_ptr);
+	store_mtls.push_back(matte_floor);
+
+	Matte* matte_blue_wall = new Matte;
+	matte_blue_wall->set_cd(0, 0, 1.0);
+	matte_blue_wall->set_ka(0);
+	matte_blue_wall->set_kd(1.0);
+	matte_blue_wall->set_sampler(sampler_ptr);
+	store_mtls.push_back(matte_blue_wall);
+
+	Matte* matte_red_wall = new Matte;
+	matte_red_wall->set_cd(1.0, 0, 0);
+	matte_red_wall->set_ka(0);
+	matte_red_wall->set_kd(1.0);
+	matte_red_wall->set_sampler(sampler_ptr);
+	store_mtls.push_back(matte_red_wall);
+
+	Reflective* reflective_ptr1 = new Reflective;
+	reflective_ptr1->set_ka(0);	// 环境光系数
+	reflective_ptr1->set_kd(0.5);	// 漫反射系数
+	reflective_ptr1->set_cd(0.5, 0.5, 0.5);	// yellow
+	reflective_ptr1->set_ks(0.15);			// phong模型的specular系数
+	reflective_ptr1->set_exp(100.0);
+	reflective_ptr1->set_kr(0.75);
+	reflective_ptr1->set_color(WHITE);
+	store_mtls.push_back(reflective_ptr1);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_color(WHITE);
+	emissive_ptr->set_radiance(1.5);
+	store_mtls.push_back(emissive_ptr);
+
+	Matte* transparent_sphere = new Matte;
+	transparent_sphere->set_cd(1.0);
+	transparent_sphere->set_ka(0);
+	transparent_sphere->set_kd(1.0);
+	transparent_sphere->set_sampler(sampler_ptr);
+	store_mtls.push_back(transparent_sphere);
 }

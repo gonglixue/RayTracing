@@ -290,7 +290,7 @@ void World::build(const int width, const int height)
 	// camera
 	Pinhole* pinhole = new Pinhole;
 	pinhole->set_eye(0, 100, 850);
-	pinhole->set_lookat(0, 0, 0);
+	pinhole->set_lookat(0, 100, 0);
 	pinhole->set_view_distance(850.0);//到视平面距离
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
@@ -308,9 +308,8 @@ void World::build(const int width, const int height)
 	matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
 
 	Grid* grid_ptr = new Grid;
-	grid_ptr->read_flat_triangles("../scene01_tri.obj");
+	grid_ptr->read_flat_triangles("../scene/scene_01_fix.scene");
 	grid_ptr->set_shared_material_for_all(matte_ptr);
-
 	grid_ptr->setup_cells();
 	
 	add_object(grid_ptr);
@@ -477,6 +476,7 @@ void World::build(const int width, const int height)
 }
 */
 
+ // path trace
 /*
 void World::build(const int width, const int height)
 {
@@ -515,13 +515,6 @@ void World::build(const int width, const int height)
 	sphere_ptr->set_shadows(false);
 	sphere_ptr->set_material(emissive_ptr);
 	add_object(sphere_ptr);
-
-	// 光源
-	PointLight* light_ptr2 = new PointLight;
-	light_ptr2->set_location(100, 50, 10);
-	light_ptr2->scale_radiance(3.0);		//?
-	light_ptr2->set_shadows(true);
-	this->add_light(light_ptr2);
 
 	float ka = 0.2;
 	Matte* matte_ptr1 = new Matte;
@@ -568,6 +561,15 @@ void World::build(const int width, const int height)
 	add_object(box_ptr);
 
 	// ground plane
+	Reflective* reflective_ptr1 = new Reflective;
+	reflective_ptr1->set_ka(0.25);	// 环境光系数
+	reflective_ptr1->set_kd(0.5);	// 漫反射稀疏
+	reflective_ptr1->set_cd(0.75, 0.75, 0);	// yellow
+	reflective_ptr1->set_ks(0.15);			// phong模型的specular系数
+	reflective_ptr1->set_exp(100.0);
+	reflective_ptr1->set_kr(0.75);
+	reflective_ptr1->set_color(WHITE);
+
 	Matte* matte_ptr6 = new Matte;
 	matte_ptr6->set_ka(0.15);
 	matte_ptr6->set_kd(0.95);
@@ -575,13 +577,53 @@ void World::build(const int width, const int height)
 	matte_ptr6->set_sampler(new Jittered(num_samples));
 
 	Plane* plane_ptr = new Plane(glm::vec3(0, 0.01, 0), glm::vec3(0, 1, 0));
-	plane_ptr->set_material(matte_ptr6);
+	plane_ptr->set_material(reflective_ptr1);
 	add_object(plane_ptr);
 
 	open_window(width, height);
 }
 */
 
+// cornell box path tracer
+/*
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 25;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new PathTrace(this);
+	//tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(0.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 200, 850);
+	pinhole->set_lookat(0, 20, 0);
+	pinhole->set_view_distance(850);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+	Grid* grid_ptr = new Grid;
+	grid_ptr->read_flat_triangles("../scene/scene_01_fix.scene");
+	grid_ptr->setup_cells();
+
+	add_object(grid_ptr);
+
+	open_window(width, height);
+}
+*/
 
 void World::render_scene()
 {
