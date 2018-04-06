@@ -15,8 +15,8 @@ public:
 
 	void read_flat_triangles(char* file_name);
 	//void read_smooth_triangles(char* file_name);
-	void tessellate_flat_sphere(const int horizontal_steps, const int vertical_steps);
-	void tessellate_smooth_sphere(const int horizontal_steps, const int vertical_steps);
+	//void tessellate_flat_sphere(const int horizontal_steps, const int vertical_steps);
+	//void tessellate_smooth_sphere(const int horizontal_steps, const int vertical_steps);
 
 	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr) const;
 	void setup_cells();

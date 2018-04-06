@@ -12,7 +12,7 @@ public:
 	std::vector<float> u;		// used for texture
 	std::vector<float> v;
 
-	std::vector<std::vector<int>> vertex_faces;	// triangles shared by each vertex
+	//std::vector<std::vector<int>> vertex_faces;	// triangles shared by each vertex
 
 	int num_vertices;
 	int num_triangles;

@@ -158,6 +158,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Directional.h" />
     <ClInclude Include="Emissive.h" />
+    <ClInclude Include="FlatMeshTriangle.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="GlossySpecular.h" />
     <ClInclude Include="Grid.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Compound.cpp" />
     <ClCompile Include="Directional.cpp" />
     <ClCompile Include="Emissive.cpp" />
+    <ClCompile Include="FlatMeshTriangle.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="GlossySpecular.cpp" />
     <ClCompile Include="Grid.cpp" />

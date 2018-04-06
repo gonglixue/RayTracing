@@ -86,10 +86,11 @@ void Grid::setup_cells()
 		obj_bBox = objects[j]->get_bounding_box();	//?
 
 		// compute the cell indices at the corners of the bounding box of the object
+		// 最小点所处的栅格坐标
 		int ixmin = clamp((obj_bBox.x0_ - p_min.x)*nx / wx, 0, nx - 1);
 		int iymin = clamp((obj_bBox.y0_ - p_min.y)*ny / wy, 0, ny - 1);
 		int izmin = clamp((obj_bBox.z0_ - p_min.z)*nz / wz, 0, nz - 1);
-
+		// 最大点所处的栅格坐标
 		int ixmax = clamp((obj_bBox.x1_ - p_min.x)*nx / wx, 0, nx - 1);
 		int iymax = clamp((obj_bBox.y1_ - p_min.y)*ny / wy, 0, ny - 1);
 		int izmax = clamp((obj_bBox.z1_ - p_min.z)*nz / wz, 0, nz - 1);
@@ -269,6 +270,191 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 	std::cout << "num_vertices: " << mesh_ptr->vertices.size();
 	std::cout << "num_faces: " << this->objects.size();
 
+}
 
+bool Grid::hit(const Ray& ray, double& t, ShadeRec& sr) const
+{
+	double ox = ray.o.x;
+	double oy = ray.o.y;
+	double oz = ray.o.z;
+	double dx = ray.d.x;
+	double dy = ray.d.y;
+	double dz = ray.d.z;
 
+	double x0 = bbox.x0_;
+	double y0 = bbox.y0_;
+	double z0 = bbox.z0_;
+	double x1 = bbox.x1_;
+	double y1 = bbox.y1_;
+	double z1 = bbox.z1_;
+
+	double tx_min, ty_min, tz_min;
+	double tx_max, ty_max, tz_max;
+
+	double a = 1.0 / dx;
+	if (a >= 0) {
+		tx_min = (x0 - ox) * a;
+		tx_max = (x1 - ox) * a;
+	}
+	else {
+		tx_min = (x1 - ox) * a;
+		tx_max = (x0 - ox) * a;
+	}
+
+	double b = 1.0 / dy;
+	if (b >= 0) {
+		ty_min = (y0 - oy) * b;
+		ty_max = (y1 - oy) * b;
+	}
+	else {
+		ty_min = (y1 - oy) * b;
+		ty_max = (y0 - oy) * b;
+	}
+
+	double c = 1.0 / dz;
+	if (c >= 0) {
+		tz_min = (z0 - oz) * c;
+		tz_max = (z1 - oz) * c;
+	}
+	else {
+		tz_min = (z1 - oz) * c;
+		tz_max = (z0 - oz) * c;
+	}
+
+	double t0, t1;
+	t0 = max(max(tx_min, ty_min), tz_min);
+	t1 = min(min(tx_max, ty_max), tz_max);
+	if (t0 > t1)
+		// 不与grid大包围盒碰撞
+		return false;
+
+	int ix, iy, iz;
+	if (bbox.inside(ray.o)) {
+		// 光线起点的栅格坐标
+		ix = clamp((ox - x0) * nx / (x1 - x0), 0, nx - 1);
+		iy = clamp((oy - y0) * ny / (y1 - y0), 0, ny - 1);
+		iz = clamp((oz - z0) * nz / (z1 - z0), 0, nz - 1);
+	}
+	else
+	{
+		// 进入点 p
+		glm::vec3 p = ray.o + t0*ray.d;
+		// 求碰撞点p的栅格坐标
+		ix = clamp((p.x - x0) * nx / (x1 - x0), 0, nx - 1);
+		iy = clamp((p.y - y0) * ny / (y1 - y0), 0, ny - 1);
+		iz = clamp((p.z - z0) * nz / (z1 - z0), 0, nz - 1);
+	}
+
+	// 扫描, 计算穿越的邻接栅格是在x方向上还是y方向上
+	// 单位栅格的世界坐标长度
+	double dtx = (tx_max - tx_min) / nx;	// （x1 - x0)/nx ?
+	double dty = (ty_max - ty_min) / ny;
+	double dtz = (tz_max - tz_min) / nz;
+
+	double tx_next, ty_next, tz_next;
+	int ix_step, iy_step, iz_step;
+	int ix_stop, iy_stop, iz_stop;
+
+	if (dx > 0) {
+		tx_next = tx_min + (ix + 1) * dtx;
+		ix_step = +1;
+		ix_stop = nx;
+	}
+	else {
+		tx_next = tx_min + (nx - ix) * dtx;
+		ix_step = -1;
+		ix_stop = -1;
+	}
+	if (dx == 0.0) {
+		tx_next = kHugeValue;
+		ix_step = -1;
+		ix_stop = -1;
+	}
+
+	if (dy > 0) {
+		ty_next = ty_min + (iy + 1) * dty;
+		iy_step = +1;
+		iy_stop = ny;
+	}
+	else {
+		ty_next = ty_min + (ny - iy) * dty;
+		iy_step = -1;
+		iy_stop = -1;
+	}
+	if (dy == 0.0) {
+		ty_next = kHugeValue;
+		iy_step = -1;
+		iy_stop = -1;
+	}
+
+	if (dz > 0) {
+		tz_next = tz_min + (iz + 1) * dtz;
+		iz_step = +1;
+		iz_stop = nz;
+	}
+	else {
+		tz_next = tz_min + (nz - iz) * dtz;
+		iz_step = -1;
+		iz_stop = -1;
+	}
+	if (dz == 0.0) {
+		tz_next = kHugeValue;
+		iz_step = -1;
+		iz_stop = -1;
+	}
+
+	// traverse the grid
+	while (true)
+	{
+		GeometricObject* object_ptr = cells[ix + nx*iy + nx*ny*iz];	//当前栅格的复合物体
+
+		if (tx_next < ty_next && tx_next < tz_next) {	// 下个栅格是x方向的
+			if (object_ptr && object_ptr->hit(ray, t, sr) && t < tx_next) {
+				material_ptr = object_ptr->get_material();
+				return true;
+			}
+
+			tx_next += dtx;
+			ix += ix_step;
+			if (ix == ix_stop)
+				return false;
+		}
+		else {
+			if (ty_next < tz_next)		// 下个栅格是y方向的
+			{
+				if (object_ptr && object_ptr->hit(ray, t, sr) && t < ty_next) {
+					material_ptr = object_ptr->get_material();
+					return (true);
+				}
+
+				ty_next += dty;
+				iy += iy_step;
+
+				if (iy == iy_stop)
+					return (false);
+			}
+			else {
+				// 下个栅格是z方向的
+				if (object_ptr && object_ptr->hit(ray, t, sr) && t < tz_next) {
+					material_ptr = object_ptr->get_material();
+					return (true);
+				}
+
+				tz_next += dtz;
+				iz += iz_step;
+
+				if (iz == iz_stop)
+					return (false);
+			}
+		}
+	}
+
+} // end of hit
+
+// 计算顶点平均法向量
+void Grid::compute_mesh_normals()
+{
+	mesh_ptr->normals.clear();
+	mesh_ptr->normals.reserve(mesh_ptr->num_vertices);
+	// TODO
 }
