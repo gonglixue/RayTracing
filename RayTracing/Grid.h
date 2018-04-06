@@ -29,6 +29,7 @@ public:
 
 private:
 	std::vector<GeometricObject*> cells;	// grid of cells, not objects. objects stored in base-class
+	std::vector<Material*> store_mtls;
 	int nx, ny, nz;		// number of cells
 	BBox bbox;			// bounding box ?
 	Mesh* mesh_ptr;		// store triangle data
@@ -41,6 +42,8 @@ private:
 	void read_obj_file(char* file_name, const int triangle_type);
 	void compute_mesh_normals();
 	
+	void construct_material_byhand();
+
 };
 
 inline void 

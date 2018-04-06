@@ -1,4 +1,4 @@
-newmtl blinn1SG
+newmtl blinn1SG				#transparent sphere
 illum 4
 Kd 0.52 0.52 0.52
 Ka 0.27 0.27 0.27
@@ -12,19 +12,19 @@ Ka 0.78 0.78 0.78
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
-newmtl initialShadingGroup
+newmtl initialShadingGroup	#floor
 illum 4
 Kd 0.50 0.50 0.50
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
-newmtl lambert2SG
+newmtl lambert2SG	#wall
 illum 4
 Kd 1.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
-newmtl lambert3SG
+newmtl lambert3SG	#wall
 illum 4
 Kd 0.00 0.01 1.00
 Ka 0.00 0.00 0.00

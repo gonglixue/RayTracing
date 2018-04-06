@@ -12,6 +12,10 @@
 // ?
 #include "Triangle.h"
 
+#include "Matte.h"
+#include "Emissive.h"
+
+
 Grid::Grid()
 	:Compound(),
 	nx(0),
@@ -224,6 +228,9 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 	max_vert = glm::vec3(-kHugeValue);
 	min_vert = glm::vec3(kHugeValue);
 
+	//Compound* component;
+	bool begining = true;
+
 	while (input_file) {
 		std::string type;
 		input_file >> type;	// ¶ÁÈ¡Ò»´Ê
@@ -272,9 +279,13 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 				FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, i0 - 1, i1 - 1, i2 - 1);
 				triangle_ptr->compute_normal(false);
 				objects.push_back(triangle_ptr);
+				//component->add_object(triangle_ptr);
 			}
 
 			break;
+		}
+		case 'g': {
+
 		}
 		default:
 			break;
@@ -292,7 +303,7 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 
 	std::cout << "finish reading obj file\n";
 	std::cout << "num_vertices: " << mesh_ptr->vertices.size() << std::endl;
-	std::cout << "num_faces: " << this->objects.size() << std::endl;
+	std::cout << "object size: " << this->objects.size() << std::endl;
 
 }
 
@@ -492,4 +503,9 @@ void Grid::set_shared_material_for_all(Material* mat)
 	{
 		objects[i]->set_material(mat);
 	}
+}
+
+void Grid::construct_material_byhand()
+{
+	Matte* 
 }

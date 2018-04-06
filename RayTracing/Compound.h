@@ -24,6 +24,8 @@ protected:
 private:
 	void delete_objects();
 	void copy_objects(const std::vector<GeometricObject*>& rhs_objects);
+
+	
 };
 
 inline int Compound::get_num_objects()
