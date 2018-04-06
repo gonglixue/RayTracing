@@ -173,6 +173,7 @@
     <ClInclude Include="MultipleObjects.h" />
     <ClInclude Include="NRooks.h" />
     <ClInclude Include="PathTrace.h" />
+    <ClInclude Include="PerfectSpecular.h" />
     <ClInclude Include="Phong.h" />
     <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RayCast.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Reflective.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShadeRec.h" />
     <ClInclude Include="SingleSphere.h" />
@@ -215,6 +217,7 @@
     <ClCompile Include="MultipleObjects.cpp" />
     <ClCompile Include="NRooks.cpp" />
     <ClCompile Include="PathTrace.cpp" />
+    <ClCompile Include="PerfectSpecular.cpp" />
     <ClCompile Include="Phong.cpp" />
     <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -222,6 +225,7 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Reflective.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShadeRec.cpp" />
     <ClCompile Include="SingleSphere.cpp" />

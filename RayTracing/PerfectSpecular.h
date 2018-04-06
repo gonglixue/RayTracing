@@ -30,12 +30,12 @@ inline void PerfectSpecular::set_kr(float k)
 	kr = k;
 }
 
-inline void PerfectSpecular::set_cr(const glm::vec3& c)
+inline void PerfectSpecular::set_color(const glm::vec3& c)
 {
 	color = c;
 }
 
-inline void PerfectSpecular::set_cr(float r, float g, float b)
+inline void PerfectSpecular::set_color(float r, float g, float b)
 {
 	color = glm::vec3(r, g, b);
 }
