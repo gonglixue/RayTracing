@@ -38,6 +38,7 @@ glm::vec3 Reflective::area_light_shade(ShadeRec& sr)
 	return BLACK;
 }
 
+// ºÍPhongÎÞ¹Ø£¿
 glm::vec3 Reflective::path_shade(ShadeRec& sr)
 {
 	glm::vec3 wo = -sr.ray.d;

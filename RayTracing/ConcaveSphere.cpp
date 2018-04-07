@@ -28,7 +28,7 @@ bool ConcaveSphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 			sr.local_hit_point = ray.o + t * ray.d;
 			sr.hit_point = sr.local_hit_point;			// Lg: treat hit_point as local_hit_point;
 			
-			printf("hit concave sphere\n");
+			//printf("hit concave sphere\n");
 			return true;
 		}
 
@@ -42,7 +42,7 @@ bool ConcaveSphere::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 			sr.local_hit_point = ray.o + t*ray.d;
 			sr.hit_point = sr.local_hit_point;
 
-			printf("hit concave sphere\n");
+			//printf("hit concave sphere\n");
 			return true;
 		}
 	}

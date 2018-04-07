@@ -271,7 +271,7 @@ void World::build(const int width, const int height)
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
-	int num_samples = 16;
+	int num_samples = 4;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -289,9 +289,9 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(0, 100, 850);
-	pinhole->set_lookat(0, 100, 0);
-	pinhole->set_view_distance(850.0);//到视平面距离
+	pinhole->set_eye(0, 50, 300);
+	pinhole->set_lookat(0, 50, 0);
+	pinhole->set_view_distance(300.0);//到视平面距离
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
 
@@ -305,10 +305,10 @@ void World::build(const int width, const int height)
 	Matte* matte_ptr = new Matte;
 	matte_ptr->set_ka(0.25);
 	matte_ptr->set_kd(0.75);
-	matte_ptr->set_cd(rand_float(), rand_float(), rand_float());
+	matte_ptr->set_cd(1, 1, 0);
 
 	Grid* grid_ptr = new Grid;
-	grid_ptr->read_flat_triangles("../scene/scene_01_fix.scene");
+	grid_ptr->read_flat_triangles("../scene/scene_02_tri.obj");
 	grid_ptr->set_shared_material_for_all(matte_ptr);
 	grid_ptr->setup_cells();
 	
@@ -316,8 +316,8 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 
-}*/
-
+}
+*/
 
 /*
  //without area light
@@ -584,6 +584,7 @@ void World::build(const int width, const int height)
 }
 */
 
+/*
 // cornell box path tracer
 void World::build(const int width, const int height)
 {
@@ -614,17 +615,70 @@ void World::build(const int width, const int height)
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
 
+	
 	Emissive* emissive_ptr = new Emissive;
 	emissive_ptr->set_color(WHITE);
-	emissive_ptr->set_radiance(1.5);
+	emissive_ptr->set_radiance(1.0);
+	ConcaveSphere* sphere_ptr = new ConcaveSphere;
+	sphere_ptr->set_radius(10000.0);
+	sphere_ptr->set_shadows(false);
+	sphere_ptr->set_material(emissive_ptr);
+	add_object(sphere_ptr);
+	
+
+	Grid* grid_ptr = new Grid;
+	grid_ptr->read_flat_triangles("../scene/scene_02_tri.obj");
+	grid_ptr->setup_cells();
+
+	add_object(grid_ptr);
+
+	open_window(width, height);
+}
+*/
+
+// build scene 1
+void World::build(const int width, const int height)
+{
+	printf("begin build...\n");
+	int num_samples = 64;
+	vp.set_hres(width);
+	vp.set_vres(height);
+	vp.set_pixel_size(1.0);
+	vp.set_gamma(1.0);
+	// vp.set_num_samples(16);
+	vp.set_sampler(new Jittered(num_samples));
+
+	frame_buffer = (GLubyte*)malloc(vp.hres*vp.vres * 3 * sizeof(GLubyte));
+	background_color = BLACK;
+	tracer_ptr = new PathTrace(this);
+	//tracer_ptr = new RayCast(this);
+
+	//环境光
+	Ambient* _ambient_ptr = new Ambient;
+	_ambient_ptr->scale_radiance(0.0);
+	this->ambient_ptr = _ambient_ptr;
+
+	// camera
+	Pinhole* pinhole = new Pinhole;
+	pinhole->set_eye(0, 40, 100);
+	pinhole->set_lookat(0, 20, 0);
+	pinhole->set_view_distance(100.0);//到视平面距离
+	pinhole->compute_uvw();
+	this->set_camera(pinhole);
+
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_color(WHITE);
+	emissive_ptr->set_radiance(1.0);
 	ConcaveSphere* sphere_ptr = new ConcaveSphere;
 	sphere_ptr->set_radius(10000.0);
 	sphere_ptr->set_shadows(false);
 	sphere_ptr->set_material(emissive_ptr);
 	add_object(sphere_ptr);
 
+
 	Grid* grid_ptr = new Grid;
-	grid_ptr->read_flat_triangles("../scene/scene_01_fix.scene");
+	grid_ptr->read_flat_triangles("../scene/scene_02_tri.obj");
 	grid_ptr->setup_cells();
 
 	add_object(grid_ptr);

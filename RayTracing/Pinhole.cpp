@@ -60,6 +60,7 @@ void Pinhole::render_scene(World& w)
 	Ray ray;
 	int depth = 0;
 	glm::dvec2 pp;		// sample point on a pixel
+	glm::vec2 sp;
 
 	int n = (int)sqrt((float)vp.get_num_samples());
 	// int n = 2;
@@ -71,7 +72,7 @@ void Pinhole::render_scene(World& w)
 	{
 		for (int c = 0; c < vp.hres; c++) {
 			pixel_color = BLACK;
-
+			/*
 			for (int p = 0; p < n; p++)
 			{
 				for (int q = 0; q < n; q++)
@@ -81,6 +82,17 @@ void Pinhole::render_scene(World& w)
 					ray.d = get_direction(pp);
 					pixel_color = pixel_color + w.get_tracer()->trace_ray(ray, 0);
 				}
+			}
+			*/
+
+			for (int j = 0; j < vp.get_num_samples(); j++)
+			{
+				sp = vp.sampler_ptr->sample_unit_square();
+				pp.x = pix_size * (c - 0.5*vp.hres + sp.x);
+				pp.y = pix_size * (r - 0.5*vp.vres + sp.y);
+				ray.d = get_direction(pp);
+
+				pixel_color = pixel_color + w.get_tracer()->trace_ray(ray, 0);
 			}
 
 			pixel_color = (1.0f / (vp.get_num_samples())) * pixel_color;

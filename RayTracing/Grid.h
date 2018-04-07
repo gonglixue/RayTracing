@@ -42,7 +42,8 @@ private:
 	void read_obj_file(char* file_name, const int triangle_type);
 	void compute_mesh_normals();
 	
-	void construct_material_byhand();
+	void construct_material_byhand1();
+	void construct_material_byhand2();
 
 };
 
