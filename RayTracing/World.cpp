@@ -588,7 +588,7 @@ void World::build(const int width, const int height)
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
-	int num_samples = 4;
+	int num_samples = 16;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -608,11 +608,20 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(0, 75, 800);
-	pinhole->set_lookat(0, 75, 0);
-	pinhole->set_view_distance(800.0);//到视平面距离
+	pinhole->set_eye(0, 60, 500);
+	pinhole->set_lookat(0, 60, 0);
+	pinhole->set_view_distance(500.0);//到视平面距离
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
+
+	Emissive* emissive_ptr = new Emissive;
+	emissive_ptr->set_color(WHITE);
+	emissive_ptr->set_radiance(1.5);
+	ConcaveSphere* sphere_ptr = new ConcaveSphere;
+	sphere_ptr->set_radius(10000.0);
+	sphere_ptr->set_shadows(false);
+	sphere_ptr->set_material(emissive_ptr);
+	add_object(sphere_ptr);
 
 	Grid* grid_ptr = new Grid;
 	grid_ptr->read_flat_triangles("../scene/scene_01_fix.scene");

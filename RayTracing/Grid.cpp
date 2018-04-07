@@ -16,6 +16,7 @@
 #include "Emissive.h"
 #include "Reflective.h"
 #include "Jittered.h"
+#include "Transparent.h"
 
 Grid::Grid()
 	:Compound(),
@@ -569,10 +570,17 @@ void Grid::construct_material_byhand()
 	emissive_ptr->mat_name = "light";
 	store_mtls.push_back(emissive_ptr);
 
-	Matte* transparent_sphere = new Matte;
-	transparent_sphere->set_cd(1.0);
-	transparent_sphere->set_ka(0);
-	transparent_sphere->set_kd(1.0);
+	//Matte* transparent_sphere = new Matte;
+	Transparent* transparent_sphere = new Transparent;
+	transparent_sphere->set_cr(1, 1, 1);
+	transparent_sphere->set_ks(0.5);
+	transparent_sphere->set_exp(2000);
+	transparent_sphere->set_ior(1.8);
+	transparent_sphere->set_kr(0.0);
+	transparent_sphere->set_kt(1.0);
+	//transparent_sphere->set_ka(0);
+	//transparent_sphere->set_cd(1.0, 1.0, 1.0);
+	//transparent_sphere->set_kd(1.0);
 	transparent_sphere->set_sampler(sampler_ptr);
 	transparent_sphere->mat_name = "transparent";
 	store_mtls.push_back(transparent_sphere);

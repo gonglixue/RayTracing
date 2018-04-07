@@ -147,6 +147,15 @@
     <ClInclude Include="ConcaveSphere.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PerfectTransmitter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BTDF.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Transparent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray.cpp">
@@ -279,6 +288,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ConcaveSphere.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfectTransmitter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BTDF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Transparent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -153,6 +153,7 @@
     <ClInclude Include="BBox.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BRDF.h" />
+    <ClInclude Include="BTDF.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Compound.h" />
     <ClInclude Include="ConcaveSphere.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="NRooks.h" />
     <ClInclude Include="PathTrace.h" />
     <ClInclude Include="PerfectSpecular.h" />
+    <ClInclude Include="PerfectTransmitter.h" />
     <ClInclude Include="Phong.h" />
     <ClInclude Include="Pinhole.h" />
     <ClInclude Include="Plane.h" />
@@ -188,6 +190,7 @@
     <ClInclude Include="SingleSphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Tracer.h" />
+    <ClInclude Include="Transparent.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="ViewPlane.h" />
     <ClInclude Include="Whitted.h" />
@@ -199,6 +202,7 @@
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BRDF.cpp" />
+    <ClCompile Include="BTDF.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Compound.cpp" />
     <ClCompile Include="ConcaveSphere.cpp" />
@@ -221,6 +225,7 @@
     <ClCompile Include="NRooks.cpp" />
     <ClCompile Include="PathTrace.cpp" />
     <ClCompile Include="PerfectSpecular.cpp" />
+    <ClCompile Include="PerfectTransmitter.cpp" />
     <ClCompile Include="Phong.cpp" />
     <ClCompile Include="Pinhole.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -234,6 +239,7 @@
     <ClCompile Include="SingleSphere.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Tracer.cpp" />
+    <ClCompile Include="Transparent.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="ViewPlane.cpp" />
     <ClCompile Include="Whitted.cpp" />
