@@ -266,7 +266,7 @@ void World::build(const int width, const int height)
 	open_window(width, height);
 }*/
 
-
+/*
 // build from obj
 void World::build(const int width, const int height)
 {
@@ -316,7 +316,7 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 
-}
+}*/
 
 
 /*
@@ -585,11 +585,10 @@ void World::build(const int width, const int height)
 */
 
 // cornell box path tracer
-/*
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
-	int num_samples = 25;
+	int num_samples = 4;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -609,9 +608,9 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(0, 200, 850);
-	pinhole->set_lookat(0, 20, 0);
-	pinhole->set_view_distance(850);//到视平面距离
+	pinhole->set_eye(0, 75, 800);
+	pinhole->set_lookat(0, 75, 0);
+	pinhole->set_view_distance(800.0);//到视平面距离
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
 
@@ -623,7 +622,6 @@ void World::build(const int width, const int height)
 
 	open_window(width, height);
 }
-*/
 
 void World::render_scene()
 {

@@ -280,9 +280,20 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 			{
 				FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, i0 - 1, i1 - 1, i2 - 1);
 				//triangle_ptr->compute_normal(false);
-				//triangle_ptr->set_material(store_mtls[mtl_state]);
+				triangle_ptr->set_material(store_mtls[mtl_state]);
 				objects.push_back(triangle_ptr);
 				//component->add_object(triangle_ptr);
+				if (mtl_state == 4)
+				{
+					//printf("set emissive mtl\n");
+					triangle_ptr->set_shadows(false);
+				}
+				if (mtl_state == 3 || mtl_state == 5)
+				{
+					triangle_ptr->noneed_reverse = true;
+				}
+				else
+					triangle_ptr->noneed_reverse = false;
 			}
 
 			break;
@@ -306,7 +317,7 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 
 	mesh_ptr->Normailize_mesh(min_vert, max_vert, 150);
 	for (int i = 0; i < objects.size(); i++) {
-		dynamic_cast<FlatMeshTriangle*>(objects[i])->compute_normal(false);
+		dynamic_cast<FlatMeshTriangle*>(objects[i])->compute_normal(true);
 	}
 
 	std::cout << "finish reading obj file\n";
@@ -522,6 +533,7 @@ void Grid::construct_material_byhand()
 	matte_floor->set_ka(0);
 	matte_floor->set_kd(0.5);
 	matte_floor->set_sampler(sampler_ptr);
+	matte_floor->mat_name = "floor";
 	store_mtls.push_back(matte_floor);
 
 	Matte* matte_blue_wall = new Matte;
@@ -529,6 +541,7 @@ void Grid::construct_material_byhand()
 	matte_blue_wall->set_ka(0);
 	matte_blue_wall->set_kd(1.0);
 	matte_blue_wall->set_sampler(sampler_ptr);
+	matte_blue_wall->mat_name = "blue";
 	store_mtls.push_back(matte_blue_wall);
 
 	Matte* matte_red_wall = new Matte;
@@ -536,6 +549,7 @@ void Grid::construct_material_byhand()
 	matte_red_wall->set_ka(0);
 	matte_red_wall->set_kd(1.0);
 	matte_red_wall->set_sampler(sampler_ptr);
+	matte_red_wall->mat_name = "red";
 	store_mtls.push_back(matte_red_wall);
 
 	Reflective* reflective_ptr1 = new Reflective;
@@ -546,11 +560,13 @@ void Grid::construct_material_byhand()
 	reflective_ptr1->set_exp(100.0);
 	reflective_ptr1->set_kr(0.75);
 	reflective_ptr1->set_color(WHITE);
+	reflective_ptr1->mat_name = "reflect";
 	store_mtls.push_back(reflective_ptr1);
 
 	Emissive* emissive_ptr = new Emissive;
 	emissive_ptr->set_color(WHITE);
 	emissive_ptr->set_radiance(1.5);
+	emissive_ptr->mat_name = "light";
 	store_mtls.push_back(emissive_ptr);
 
 	Matte* transparent_sphere = new Matte;
@@ -558,5 +574,6 @@ void Grid::construct_material_byhand()
 	transparent_sphere->set_ka(0);
 	transparent_sphere->set_kd(1.0);
 	transparent_sphere->set_sampler(sampler_ptr);
+	transparent_sphere->mat_name = "transparent";
 	store_mtls.push_back(transparent_sphere);
 }

@@ -1,5 +1,7 @@
 #include "Matte.h"
 #include "Constants.h"
+#include <iostream>
+
 Matte::Matte()
 	:Material(),
 	ambient_brdf(new Lambertian),
@@ -138,6 +140,11 @@ glm::vec3 Matte::path_shade(ShadeRec& sr)
 	float pdf;
 	glm::vec3 f = diffuse_brdf->sample_f(sr, wo, wi, pdf);	// 漫反射颜色（实际上与方向无关）
 	float ndotwi = glm::dot(sr.normal, wi);
+	if (glm::dot(sr.normal, wo) < 0) {
+		//printf("%s:", mat_name.c_str());
+		std::cout << mat_name;
+		std::cout << ":" << "normal reverse" << std::endl;
+	}
 	Ray reflected_ray(sr.hit_point, wi);
 
 	return (ndotwi / pdf) * f * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1) ;

@@ -55,6 +55,22 @@ bool FlatMeshTriangle::hit(const Ray& ray, double& tmin, ShadeRec& sr) const
 	tmin = t;
 	sr.normal = normal;  	// for flat shading
 	sr.local_hit_point = ray.o + t * ray.d;
+	sr.hit_point = sr.local_hit_point;
 
 	return (true);
+}
+
+void FlatMeshTriangle::compute_normal(bool reverse_normal)
+{
+	glm::vec3 temp1 = mesh_ptr->vertices[index1] - mesh_ptr->vertices[index0];
+	glm::vec3 temp2 = mesh_ptr->vertices[index2] - mesh_ptr->vertices[index0];
+
+	normal = glm::cross(temp1, temp2);
+	normal = glm::normalize(normal);
+
+	if (noneed_reverse)
+		return;
+
+	if (reverse_normal)
+		normal = -normal;
 }

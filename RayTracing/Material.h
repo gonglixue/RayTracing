@@ -3,6 +3,7 @@
 
 #include "World.h"
 #include "ShadeRec.h"
+#include <string>
 
 class Material
 {
@@ -19,6 +20,8 @@ public:
 	virtual glm::vec3 path_shade(ShadeRec& sr);
 	virtual void set_sampler(Sampler* sampler_ptr);
 	virtual glm::vec3 global_shade(ShadeRec& sr);
+
+	std::string mat_name;
 protected:
 	Material& operator= (const Material& rhs);
 	bool shadows;

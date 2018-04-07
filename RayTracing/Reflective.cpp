@@ -1,4 +1,5 @@
 #include "Reflective.h"
+#include <iostream>
 
 Reflective::Reflective()
 	:Phong(),
@@ -22,6 +23,8 @@ glm::vec3 Reflective::shade(ShadeRec& sr)
 	// 以碰撞点为起点，wi为方向的光线
 	Ray reflected_ray(sr.hit_point, wi);
 
+
+
 	L = L + glm::dot(sr.normal, wi) * (fr * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1));
 
 	return L;
@@ -43,6 +46,12 @@ glm::vec3 Reflective::path_shade(ShadeRec& sr)
 
 	glm::vec3 fr = reflective_brdf->sample_f(sr, wo, wi, pdf);
 	Ray reflected_ray(sr.hit_point, wi);
+
+	if (glm::dot(sr.normal, wo) < 0) {
+		//printf("%s:", mat_name.c_str());
+		std::cout<< mat_name;
+		printf(" need reverse\n");
+	}
 	
 	return glm::dot(sr.normal, wi) / pdf
 		* (fr * sr.w.tracer_ptr->trace_ray(reflected_ray, sr.depth + 1));

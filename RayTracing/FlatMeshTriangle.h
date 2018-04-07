@@ -10,5 +10,8 @@ public:
 	virtual ~FlatMeshTriangle();
 
 	virtual bool hit(const Ray& ray, double& tmin, ShadeRec& sr) const;
+
+	virtual void compute_normal(bool reverse_normal);
+	bool noneed_reverse;
 };
 #endif // !__FLAT_MESH_TRIANGLE_H__

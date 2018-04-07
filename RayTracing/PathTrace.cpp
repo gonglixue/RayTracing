@@ -2,6 +2,7 @@
 #include "World.h"
 #include "ShadeRec.h"
 #include "Material.h"
+#include <iostream>
 
 PathTrace::PathTrace()
 	:Tracer()
@@ -27,7 +28,9 @@ glm::vec3 PathTrace::trace_ray(const Ray& ray, const int depth) const
 			sr.depth = depth;
 			sr.ray = ray;
 
-			return sr.material_ptr->path_shade(sr);
+			glm::vec3 color = sr.material_ptr->path_shade(sr);
+			//std::cout << "v " << sr.hit_point.x << " " << sr.hit_point.y << " " << sr.hit_point.z << std::endl;
+			return color;
 		}
 		else
 			return world_ptr->background_color;

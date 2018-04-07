@@ -51,6 +51,8 @@ glm::vec3 Emissive::get_Le(ShadeRec& sr) const
 
 glm::vec3 Emissive::path_shade(ShadeRec& sr)
 {
+	if(sr.depth > 1)
+		printf("Emissive path_shade\n");
 	return ls * color;
 }
 
