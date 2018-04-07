@@ -588,7 +588,7 @@ void World::build(const int width, const int height)
 void World::build(const int width, const int height)
 {
 	printf("begin build...\n");
-	int num_samples = 16;
+	int num_samples = 4;
 	vp.set_hres(width);
 	vp.set_vres(height);
 	vp.set_pixel_size(1.0);
@@ -608,9 +608,9 @@ void World::build(const int width, const int height)
 
 	// camera
 	Pinhole* pinhole = new Pinhole;
-	pinhole->set_eye(0, 60, 500);
+	pinhole->set_eye(0, 60, 200);
 	pinhole->set_lookat(0, 60, 0);
-	pinhole->set_view_distance(500.0);//到视平面距离
+	pinhole->set_view_distance(200.0);//到视平面距离
 	pinhole->compute_uvw();
 	this->set_camera(pinhole);
 
