@@ -27,7 +27,7 @@ const glm::vec3	RED(1.0, 0.0, 0.0);
 
 const float 	invRAND_MAX = (1.0 / (float)RAND_MAX);
 
-const int MAX_TRACE_DEPTH = 5;
+const int MAX_TRACE_DEPTH = 10;
 
 //#define rand_float() (rand() * invRAND_MAX)
 

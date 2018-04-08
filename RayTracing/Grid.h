@@ -43,7 +43,7 @@ private:
 	void compute_mesh_normals();
 	
 	void construct_material_byhand1();
-	void construct_material_byhand2();
+	void construct_material_byhand2(int glossy_sample=8);
 
 };
 

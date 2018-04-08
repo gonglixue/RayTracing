@@ -17,6 +17,7 @@
 #include "Reflective.h"
 #include "Jittered.h"
 #include "Transparent.h"
+#include "GlossyReflector.h"
 
 Grid::Grid()
 	:Compound(),
@@ -218,7 +219,8 @@ void Grid::read_flat_triangles(char* file_name)
 void Grid::read_obj_file(char* file_name, const int tri_type)
 {
 	//test
-	construct_material_byhand2();
+	//construct_material_byhand2(16);
+	construct_material_byhand1();
 
 	std::ifstream input_file(file_name);
 	const int LINE_LENGTH = 100;
@@ -284,19 +286,19 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 				triangle_ptr->set_material(store_mtls[mtl_state]);
 				objects.push_back(triangle_ptr);
 
-				//if (mtl_state == 4)
-				//{
-				//	//printf("set emissive mtl\n");
-				//	triangle_ptr->set_shadows(false);
-				//}
-				//if (mtl_state == 3 || mtl_state == 5)
-				//{
-				//	triangle_ptr->noneed_reverse = true;
-				//}
-				//else
-				//	triangle_ptr->noneed_reverse = false;
+				if (mtl_state == 4)
+				{
+					//printf("set emissive mtl\n");
+					triangle_ptr->set_shadows(false);
+				}
+				if (mtl_state == 3 || mtl_state == 5)
+				{
+					triangle_ptr->noneed_reverse = true;
+				}
+				else
+					triangle_ptr->noneed_reverse = false;
 
-				triangle_ptr->noneed_reverse = true;
+				//triangle_ptr->noneed_reverse = true;
 			}
 
 			break;
@@ -320,7 +322,7 @@ void Grid::read_obj_file(char* file_name, const int tri_type)
 
 	mesh_ptr->Normailize_mesh(min_vert, max_vert, 150);
 	for (int i = 0; i < objects.size(); i++) {
-		dynamic_cast<FlatMeshTriangle*>(objects[i])->compute_normal(false);
+		dynamic_cast<FlatMeshTriangle*>(objects[i])->compute_normal(true);
 	}
 
 	std::cout << "finish reading obj file\n";
@@ -530,7 +532,7 @@ void Grid::set_shared_material_for_all(Material* mat)
 
 void Grid::construct_material_byhand1()
 {
-	Jittered* sampler_ptr = new Jittered(16);
+	Jittered* sampler_ptr = new Jittered(64);
 
 	Matte* matte_floor = new Matte;
 	matte_floor->set_cd(1.0);
@@ -541,7 +543,7 @@ void Grid::construct_material_byhand1()
 	store_mtls.push_back(matte_floor);
 
 	Matte* matte_blue_wall = new Matte;
-	matte_blue_wall->set_cd(0, 0, 1.0);
+	matte_blue_wall->set_cd(0, 0, 0.8);
 	matte_blue_wall->set_ka(0);
 	matte_blue_wall->set_kd(1.0);
 	matte_blue_wall->set_sampler(sampler_ptr);
@@ -549,7 +551,7 @@ void Grid::construct_material_byhand1()
 	store_mtls.push_back(matte_blue_wall);
 
 	Matte* matte_red_wall = new Matte;
-	matte_red_wall->set_cd(1.0, 0, 0);
+	matte_red_wall->set_cd(0.8, 0, 0);
 	matte_red_wall->set_ka(0);
 	matte_red_wall->set_kd(1.0);
 	matte_red_wall->set_sampler(sampler_ptr);
@@ -569,7 +571,7 @@ void Grid::construct_material_byhand1()
 
 	Emissive* emissive_ptr = new Emissive;
 	emissive_ptr->set_color(WHITE);
-	emissive_ptr->set_radiance(40.0);
+	emissive_ptr->set_radiance(8.0);
 	emissive_ptr->mat_name = "light";
 	store_mtls.push_back(emissive_ptr);
 
@@ -591,12 +593,12 @@ void Grid::construct_material_byhand1()
 
 
 
-void Grid::construct_material_byhand2()
+void Grid::construct_material_byhand2(int glossy_sample)
 {
 	Jittered* sampler_ptr = new Jittered(16);
 
 	Matte* lambert_wall = new Matte;
-	lambert_wall->set_cd(1.0);
+	lambert_wall->set_cd(0.5);
 	lambert_wall->set_ka(0);
 	lambert_wall->set_kd(0.5);
 	lambert_wall->set_sampler(sampler_ptr);
@@ -604,7 +606,7 @@ void Grid::construct_material_byhand2()
 	store_mtls.push_back(lambert_wall);
 
 	Matte* lambert_floor = new Matte;
-	lambert_floor->set_cd(1.0);
+	lambert_floor->set_cd(0.5);
 	lambert_floor->set_ka(0);
 	lambert_floor->set_kd(0.5);
 	lambert_floor->set_sampler(sampler_ptr);
@@ -643,6 +645,7 @@ void Grid::construct_material_byhand2()
 	lambert5sg->mat_name = "lambert5sg";
 	store_mtls.push_back(lambert5sg);
 
+	/*
 	Reflective* reflective_p2 = new Reflective;
 	reflective_p2->set_ka(0);	// 环境光系数
 	reflective_p2->set_kd(0.5);	// 漫反射系数
@@ -653,37 +656,56 @@ void Grid::construct_material_byhand2()
 	reflective_p2->set_color(WHITE);
 	reflective_p2->mat_name = "glossy_plane2";
 	store_mtls.push_back(reflective_p2);
+	*/
 
-	Reflective* reflective_p3 = new Reflective;
+	GlossyReflector* reflective_p2 = new GlossyReflector;
+	reflective_p2->set_samples(glossy_sample, 10000.0);
+	reflective_p2->set_ka(0);
+	reflective_p2->set_kd(0.5);
+	reflective_p2->set_cd(1.0, 1.0, 1.0);
+	reflective_p2->set_exp(10000.0);
+	reflective_p2->set_exponent(10000.0);		//derived
+	reflective_p2->set_kr(1.0);
+	reflective_p2->set_cr(1.0, 1.0, 1.0);
+	reflective_p2->mat_name = "glossy_plane2";
+	store_mtls.push_back(reflective_p2);
+
+
+	GlossyReflector* reflective_p3 = new GlossyReflector;
+	reflective_p3->set_samples(glossy_sample, 3000.0);
 	reflective_p3->set_ka(0);	// 环境光系数
 	reflective_p3->set_kd(0.5);	// 漫反射系数
 	reflective_p3->set_cd(1.0, 1.0, 1.0);	// yellow
 	reflective_p3->set_ks(1.0);			// phong模型的specular系数
-	reflective_p3->set_exp(20.0);
+	reflective_p3->set_exp(3000.0);
 	reflective_p3->set_kr(1.0);
-	reflective_p3->set_color(WHITE);
+	reflective_p3->set_exponent(3000.0);
 	reflective_p3->mat_name = "glossy_plane3";
 	store_mtls.push_back(reflective_p3);
 
-	Reflective* reflective_p4 = new Reflective;
+	GlossyReflector* reflective_p4 = new GlossyReflector;
+	reflective_p4->set_samples(glossy_sample, 1000.0);
 	reflective_p4->set_ka(0);	// 环境光系数
 	reflective_p4->set_kd(0.5);	// 漫反射系数
 	reflective_p4->set_cd(1.0, 1.0, 1.0);	// yellow
 	reflective_p4->set_ks(1.0);			// phong模型的specular系数
-	reflective_p4->set_exp(10.0);
+	reflective_p4->set_exp(1000.0);
+	reflective_p4->set_exponent(1000.0);
 	reflective_p4->set_kr(1.0);
-	reflective_p4->set_color(WHITE);
+	reflective_p4->set_cr(1.0, 1.0, 1.0);
 	reflective_p4->mat_name = "glossy_plane4";
 	store_mtls.push_back(reflective_p4);
 
-	Reflective* reflective_p5 = new Reflective;
+	GlossyReflector* reflective_p5 = new GlossyReflector;
+	reflective_p5->set_samples(glossy_sample, 500.0);
 	reflective_p5->set_ka(0);	// 环境光系数
 	reflective_p5->set_kd(0.5);	// 漫反射系数
 	reflective_p5->set_cd(1.0, 1.0, 1.0);	// yellow
 	reflective_p5->set_ks(1.0);			// phong模型的specular系数
-	reflective_p5->set_exp(5.0);
+	reflective_p5->set_exp(500.0);
+	reflective_p4->set_exponent(500.0);
 	reflective_p5->set_kr(1.0);
-	reflective_p5->set_color(WHITE);
+	reflective_p5->set_cr(1.0, 1.0, 1.0);
 	reflective_p5->mat_name = "glossy_plane5";
 	store_mtls.push_back(reflective_p5);
 

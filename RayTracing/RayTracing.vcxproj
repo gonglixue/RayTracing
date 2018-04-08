@@ -162,6 +162,7 @@
     <ClInclude Include="Emissive.h" />
     <ClInclude Include="FlatMeshTriangle.h" />
     <ClInclude Include="GeometricObject.h" />
+    <ClInclude Include="GlossyReflector.h" />
     <ClInclude Include="GlossySpecular.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Jittered.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="Emissive.cpp" />
     <ClCompile Include="FlatMeshTriangle.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
+    <ClCompile Include="GlossyReflectorcpp.cpp" />
     <ClCompile Include="GlossySpecular.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Jittered.cpp" />

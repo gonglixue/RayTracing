@@ -206,7 +206,8 @@ glm::dvec3 Sampler::sample_hemisphere()
 	if (count % num_samples == 0)  									// start of a new pixel
 		jump = (rand_int() % num_sets) * num_samples;
 
-	return (hemisphere_samples[jump + shuffled_indices[jump + count++ % num_samples]]);
+	int shuffle_ind = shuffled_indices[jump + (count++ % num_samples)];
+	return (hemisphere_samples[jump + shuffle_ind]);
 	
 }
 
